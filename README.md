@@ -1,4 +1,4 @@
 # FortProg
 Praktikum
 
-Ein simpler Proolog-Interpreter in Haskell
+Ein simpler Proolog-Interpreter in Haskell ohne Modulfunktion.
