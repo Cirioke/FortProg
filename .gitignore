@@ -17,4 +17,12 @@
 
 *.swap
 
+
+# Linux directory 
 .directory
+
+# Individuelle Sandbox
+sandbox/**
+
+# Ignore VS Code Setup
+.vscode/
