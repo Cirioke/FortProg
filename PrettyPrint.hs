@@ -1,4 +1,4 @@
-module PrittyPrint where
+module PrettyPrint where
 
 import Type
 
