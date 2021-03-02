@@ -55,9 +55,7 @@ apply (Subst ((a, b):c)) (Var d)    = if a == d
 --   pretty s = 
 
 
--- 8.
--- instance Vars Subst where
---   allVarsSet (Subst substRules) = allVarsSet substRules
+
 
 
 -- 9.
