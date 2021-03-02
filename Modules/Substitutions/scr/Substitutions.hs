@@ -17,7 +17,7 @@ import Variables
 
 -- 1.
 data Subst = Subst [(VarName, Term)]
-  deriving (Show)
+  deriving (Show, Vars) -- Teilaufgabe 8.
 
 -- 2.
 domain :: Subst -> [VarName]
@@ -56,8 +56,8 @@ apply (Subst ((a, b):c)) (Var d)    = if a == d
 
 
 -- 8.
-instance Vars Subst where
-  allVarsSet (Subst substRules) = allVarsSet substRules
+-- instance Vars Subst where
+--   allVarsSet (Subst substRules) = allVarsSet substRules
 
 
 -- 9.
