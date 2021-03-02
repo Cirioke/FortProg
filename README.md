@@ -9,8 +9,7 @@ Um dem ghc/ghci alternative Pfade zum überpüfen nach Modulen zu geben:
     $> ghci -i"<pfad1>:<pfad2>…<pfad3>"
     $> ghc -i"<pfad1>:<pfad2>…<pfad3>" main.hs
 
-um sich schreibkram zu sparen emfehle ich eine Umgebungsvariable HASKELL_PATH
-anzulegen, welche alle Pfade enthält z.B.:
+um sich schreibkram zu sparen lässt sich z.B. eine Umgebungsvariable HASKELL_PATH anzulegen, welche alle Pfade enthält z.B.:
 
 <Path to FortProg>/Modules:
 <Path to FortProg>/Modules/InteraktiveEnvironment/scr:

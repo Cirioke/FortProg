@@ -1,7 +1,5 @@
 {-# LANGUAGE TemplateHaskell #-}
 
--- module TestVariables where 
-
 import Test.QuickCheck
 import Variables
 import Type

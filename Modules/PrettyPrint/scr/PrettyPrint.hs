@@ -10,16 +10,16 @@ class Pretty a where
 
 -- Define "pretty" for "Term".
 instance Pretty Term where
-  pretty (Var  (VarName a)   ) = a                  
-  pretty (Comb "." (a:(b:[]))) = "[" ++ pretty a ++ nexts b ++ "]"
+  pretty (Var  (VarName vName)        ) = vName
+  pretty (Comb "."             [t0,t1]) = "[" ++ pretty t0 ++ nexts t1 ++ "]"
    where
     nexts :: Term -> String
-    nexts (Comb "."  (a:(b:[]))) = ", " ++ pretty a ++ nexts b
-    nexts (Comb "[]" _         ) = ""
-    nexts a                      = "|" ++ pretty a
+    nexts (Comb "."  [t0,t1]) = ", " ++ pretty t0 ++ nexts t1
+    nexts (Comb "[]" _      ) = ""
+    nexts  term               = "|" ++ pretty term
 
-  pretty (Comb a   []        ) = a  
-  pretty (Comb a   (b:bs)    ) = a ++ "(" ++ joined b bs ++ ")"
+  pretty (Comb cName   []    ) = cName
+  pretty (Comb cName   terms ) = cName ++ "(" ++ joined terms ++ ")"
    where
-    joined b bs = (foldl (\x b -> x ++ ", " ++ pretty b) (pretty b) bs)
+    joined (t:ts) = (foldl (\s t0 -> s ++ ", " ++ pretty t0) (pretty t) ts)
 
