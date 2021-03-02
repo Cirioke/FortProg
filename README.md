@@ -7,7 +7,7 @@ Ein simpler Proolog-Interpreter in Haskell ohne Modulfunktion.
 Um dem ghc/ghci alternative Pfade zum überpüfen nach Modulen zu geben:
 
     $> ghci -i"<pfad1>:<pfad2>…<pfad3>"
-    $> ghc -i"<pfad1>:<pfad2>…<pfad3>" main.hs
+    $> ghc -i"<pfad1>:<pfad2>…<pfad3>" Main.hs
 
 um sich schreibkram zu sparen emfehle ich eine Umgebungsvariable HASKELL_PATH
 anzulegen, welche alle Pfade enthält z.B.:
@@ -33,8 +33,8 @@ Damit lässt sich dann dann einfach Compilieren:
 
 # Bash
 
-    $> ghc -i"$HASKELL_PATH" main.hs
+    $> ghc -i"$HASKELL_PATH" Main.hs
 
 # PowerShell
 
-    $> ghc -i"$env:HASKELL_PATH" main.hs
+    $> ghc -i"$env:HASKELL_PATH" Main.hs
