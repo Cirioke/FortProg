@@ -1,6 +1,15 @@
 -- Credit to Michael Hanus
 
-module SetsAsOrderedList (Set, empty, insert, isElem, union, toList, fromList)
+module SetsAsOrderedList 
+  ( Set
+  , empty
+  , insert
+  , isElem
+  , union
+  , unionAll
+  , mapUnion
+  , toList
+  , fromList)
  where
 
 ----------------------------------------------------------------------
@@ -47,7 +56,18 @@ union (Set xs1) (Set xs2) = Set (ounion xs1 xs2)
 ----------------------------------------------------------------------
 ----------------------- OWN CODE -------------------------------------
 ----------------------------------------------------------------------
+-- TODO: Comments
+unionAll :: Ord a => [Set a] -> Set a
+unionAll = foldr union empty
 
-toList :: Set a -> [a]
+mapUnion :: Ord a => (b -> Set a) -> [b]  -> Set a
+mapUnion func lst = unionAll (map func lst)
 
-fromList :: [a] -> Set a
+toList :: Ord a => Set a -> [a]
+toList (Set lst) = lst
+
+fromList :: Ord a => [a] -> Set a
+fromList lst = flst empty lst
+  where 
+    flst acc []     = acc
+    flst acc (x:xs) = flst (insert x acc) xs
