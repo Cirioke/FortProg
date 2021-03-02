@@ -6,8 +6,8 @@ import Test.QuickCheck
 import Variables
 import Type
 
-unitTests_allVars :: [(Term, [VarName])]
-unitTests_allVars =
+unitTests_allVars_Term :: [(Term, [VarName])]
+unitTests_allVars_Term =
     -- 0
   [ ( Var (VarName "A")
     , [VarName "A"] ) 
@@ -56,11 +56,11 @@ unitTests_allVars =
   ]
 
 prop_unit_allVars :: Int -> Property
-prop_unit_allVars i =    i < (length unitTests_allVars)
+prop_unit_allVars i =    i < (length unitTests_allVars_Term)
                       && i >= 0
                       ==> actual == expected
   where
-    (term, expected) = unitTests_allVars !! i
+    (term, expected) = unitTests_allVars_Term !! i
     actual = allVars term
     
 

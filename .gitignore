@@ -17,6 +17,7 @@
 
 *.swap
 
+*.ps1
 
 # Linux directory 
 .directory
