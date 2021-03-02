@@ -20,10 +20,11 @@ instance Vars Rule where
   allVarsSet (Rule conc pres) = mapUnion allVarsSet (conc:pres)
 
 instance Vars Prog where
-  allVars (Prog rules) = mapUnion allVarsSet rules
+  allVarsSet (Prog rules) = mapUnion allVarsSet rules
 
 instance Vars Goal where
-  allVars (Goal terms) = mapUnion allVarsSet terms
+  allVarsSet (Goal terms) = mapUnion allVarsSet terms
+
 
 
 -- \ Gives a infinite list of valid Prolog variable names, stored in a VarName.
