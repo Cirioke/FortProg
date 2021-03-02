@@ -4,14 +4,14 @@ module Substitutions
     , empty
     , single
     , apply
-    , compose
-    , restrictTo
+--    , compose
+--    , restrictTo
     )
   where
 
 import Test.QuickCheck
 import Type
-import SetsAsOrderedLists
+-- import SetsAsOrderedLists
 import PrettyPrint
 import Variables
 
@@ -45,6 +45,12 @@ apply (Subst ((a, b):c)) (Var d)    = if a == d
 
 -- 5.
 -- compose :: Subst -> Subst -> Subst
+
+
+compose :: Subst -> Subst -> Subst
+compose (Subst lst1) (Subst lst2) = Subst (zip (lst1 ++ (zip fst (unzip lst2)) (map apply (Subst lst1) (snd (unzip lst2)))))
+
+
 
 -- 6.
 -- restrictTo :: Subst -> [VarName] -> Subst
