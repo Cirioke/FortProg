@@ -1,4 +1,4 @@
-module Variables (Vars, allVars) where
+module Variables (Vars, allVars, allVarsSet) where
 
 import Type
 import SetsAsOrderedList
@@ -12,18 +12,27 @@ class Vars a where
   -- / Get a Set of all variables contained.
   allVarsSet :: a -> Set VarName
 
+instance Vars a  => Vars [a] where
+  allVarsSet = mapUnion allVarsSet
+
+instance (Vars a, Vars b) => Vars (a,b) where
+  allVarsSet (a,b) = union (allVarsSet a) (allVarsSet b)
+
+instance Vars VarName where
+  allVarsSet vName = insert vName empty
+
 instance Vars Term where
-  allVarsSet (Var   vName         ) = insert vName empty
-  allVarsSet (Comb  cName   terms ) = mapUnion allVarsSet terms
+  allVarsSet (Comb  _ terms ) = allVarsSet terms
+  allVarsSet  vName           = allVarsSet vName
 
 instance Vars Rule where
-  allVarsSet (Rule conc pres) = mapUnion allVarsSet (conc:pres)
+  allVarsSet (Rule conc pres) = allVarsSet (conc:pres)
 
 instance Vars Prog where
-  allVarsSet (Prog rules) = mapUnion allVarsSet rules
+  allVarsSet (Prog rules) = allVarsSet rules
 
 instance Vars Goal where
-  allVarsSet (Goal terms) = mapUnion allVarsSet terms
+  allVarsSet (Goal terms) = allVarsSet terms
 
 
 

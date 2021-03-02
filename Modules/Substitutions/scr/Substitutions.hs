@@ -11,7 +11,7 @@ module Substitutions
 
 import Test.QuickCheck
 import Type
-import SetsAsOrderedLists
+-- import SetsAsOrderedLists
 import PrettyPrint
 import Variables
 
@@ -56,8 +56,8 @@ apply (Subst ((a, b):c)) (Var d)    = if a == d
 
 
 -- 8.
--- instance Vars Subst where
---   allVarsSet s = 
+instance Vars Subst where
+  allVarsSet (Subst substRules) = allVarsSet substRules
 
 
 -- 9.
