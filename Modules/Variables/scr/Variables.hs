@@ -15,9 +15,11 @@ insertVarName vName@(VarName str) lst@( vName0@(VarName str0): vNames) =
       then vName : lst
       else vName0 : (insertVarName vName vNames)
 
+
+
 instance Vars Term where
-  allVars (Var   vName                ) = [vName]
-  allVars (Comb  cName   (term:terms) ) = [VarName "TODO"]
+  allVars (Var   vName         ) = [vName]
+  allVars (Comb  cName   terms ) = nodup (map allVars terms)
 
 instance Vars Rule where
   allVars (Rule conc (pre:pres)) = [VarName "TODO"]

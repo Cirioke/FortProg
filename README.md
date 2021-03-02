@@ -33,8 +33,8 @@ Damit lässt sich dann dann einfach Compilieren:
 
 # Bash
 
-    $> ghc -i"$HASKELL_PATH" main.hs
+    $> ghc -i"$HASKELL_PATH" Main.hs
 
 # PowerShell
 
-    $> ghc -i"$env:HASKELL_PATH" main.hs
+    $> ghc -i"$env:HASKELL_PATH" Main.hs

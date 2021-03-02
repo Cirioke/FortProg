@@ -1,0 +1,17 @@
+/Modules
+/Modules/InteraktiveEnvironment/scr
+/Modules/InteraktiveEnvironment/tests
+/Modules/PrettyPrint/scr
+/Modules/PrettyPrint/tests
+/Modules/Renaming/scr
+/Modules/Renaming/tests
+/Modules/SLDResolution/scr
+/Modules/SLDResolution/tests
+/Modules/Substitutions/scr
+/Modules/Substitutions/tests
+/Modules/Unification/scr
+/Modules/Unification/tests
+/Modules/Variables/scr
+/Modules/Variables/tests
+/Modules/SetsAsOrderedList/scr
+/Modules/SetsAsOrderedList/tests
