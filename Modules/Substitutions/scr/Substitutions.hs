@@ -17,7 +17,7 @@ import Variables
 
 -- 1.
 data Subst = Subst [(VarName, Term)]
-  deriving (Show)
+  deriving (Show, Vars) -- Teilaufgabe 8.
 
 -- 2.
 domain :: Subst -> [VarName]
@@ -63,7 +63,7 @@ compose (Subst lst1) (Subst lst2) = Subst (zip (lst1 ++ (zip fst (unzip lst2)) (
 
 -- 8.
 -- instance Vars Subst where
---   allVarsSet s = 
+--   allVarsSet (Subst substRules) = allVarsSet substRules
 
 
 -- 9.
