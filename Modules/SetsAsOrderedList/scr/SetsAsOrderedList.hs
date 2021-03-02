@@ -9,7 +9,8 @@ module SetsAsOrderedList
   , unionAll
   , mapUnion
   , toList
-  , fromList)
+  , fromList
+  )
  where
 
 ----------------------------------------------------------------------
