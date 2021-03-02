@@ -62,8 +62,6 @@ compose (Subst lst1) (Subst lst2) = Subst (zip (lst1 ++ (zip fst (unzip lst2)) (
 
 
 
-
-
 -- 9.
 -- instance Arbitrary Subst where
 --   arbitrary = 
