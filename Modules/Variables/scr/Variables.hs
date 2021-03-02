@@ -1,32 +1,29 @@
 module Variables (Vars, allVars) where
 
 import Type
+import SetsAsOrderedList
 
 -- / Vars is a class for datatypes containing variables.
 class Vars a where
-    -- / Get all variables contained (without dublicates).
+  -- / Get a list of all variables contained (without dublicates).
   allVars :: a -> [VarName]
+  allVars = toList.allVarsSet
 
-insertVarName :: VarName -> [VarName] -> [VarName]
-insertVarName vName@(VarName str) lst@( vName0@(VarName str0): vNames) = 
-  if str == str0 
-    then lst
-    else if str < str0
-      then vName : lst
-      else vName0 : (insertVarName vName vNames)
+  -- / Get a Set of all variables contained.
+  allVarsSet :: a -> Set VarName
 
 instance Vars Term where
-  allVars (Var   vName                ) = [vName]
-  allVars (Comb  cName   (term:terms) ) = [VarName "TODO"]
+  allVarsSet (Var   vName         ) = insert vName empty
+  allVarsSet (Comb  cName   terms ) = mapUnion allVarsSet terms
 
 instance Vars Rule where
-  allVars (Rule conc (pre:pres)) = [VarName "TODO"]
+  allVarsSet (Rule conc pres) = mapUnion allVarsSet (conc:pres)
 
 instance Vars Prog where
-  allVars (Prog (rule:rules)) = [VarName "TODO"]
+  allVars (Prog rules) = mapUnion allVarsSet rules
 
 instance Vars Goal where
-  allVars (Goal (term: terms)) = [VarName "TODO"]
+  allVars (Goal terms) = mapUnion allVarsSet terms
 
 
 -- \ Gives a infinite list of valid Prolog variable names, stored in a VarName.
@@ -53,10 +50,10 @@ freshVars = concatMap appendLetters digitCombs
 
     -- \ All possible strings containing only digits.
     digitCombs :: [String]
-    digitCombs       = allCombinations     ['0'..'9']
+    digitCombs = allCombs ['0'..'9']
 
     -- \ Takes in a string and returns a list of VarNames 
     -- with the given String as Value each extended with a alphabet letter.
-    appendLetters :: String -> [String]
+    appendLetters :: String -> [VarName]
     appendLetters cs = [VarName (l:cs)| l<-['A'..'Z']]
      
