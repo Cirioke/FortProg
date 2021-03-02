@@ -26,6 +26,3 @@ sandbox/**
 
 # Ignore VS Code Setup
 .vscode/
-
-# Ignore some cabal stuff
-dist/

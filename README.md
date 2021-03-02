@@ -15,6 +15,8 @@ anzulegen, welche alle Pfade enthält z.B.:
 <Path to FortProg>/Modules:
 <Path to FortProg>/Modules/InteraktiveEnvironment/scr:
 <Path to FortProg>/Modules/InteraktiveEnvironment/tests:
+<Path to FortProg>/Modules/PrettyPrint/scr:
+<Path to FortProg>/Modules/PrettyPrint/tests:
 <Path to FortProg>/Modules/Renaming/scr:
 <Path to FortProg>/Modules/Renaming/tests:
 <Path to FortProg>/Modules/SLDResolution/scr:
