@@ -4,14 +4,14 @@ module Substitutions
     , empty
     , single
     , apply
---    , compose
+    , compose
 --    , restrictTo
     )
   where
 
 import Test.QuickCheck
 import Type
--- import SetsAsOrderedLists
+import SetsAsOrderedList (isElem,fromList)
 import PrettyPrint
 import Variables
 
@@ -44,15 +44,12 @@ apply (Subst ((a, b):c)) (Var d)    = if a == d
                                         else apply (Subst c) (Var d)
 
 -- 5.
--- compose :: Subst -> Subst -> Subst
 compose :: Subst -> Subst -> Subst
 compose (Subst a) (Subst b) = Subst (a ++ (zip (fst (unzip b)) (map (apply (Subst a)) (snd (unzip b)))))
 
-
-
 -- 6.
--- restrictTo :: Subst -> [VarName] -> Subst
-
+restrictTo :: Subst -> [VarName] -> Subst
+restrictTo (Subst lst) names = Subst (filter (\(x,_) -> isElem x (fromList names)) lst)
 
 -- 7.
 -- instance Pretty Subst where
