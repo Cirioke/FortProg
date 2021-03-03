@@ -61,17 +61,17 @@ restrictTo (Subst lst) names = Subst (filter (\(x,_) -> isElem x (fromList names
 
 -- 7.
 
-join :: String -> [String] -> String
-join s [] = ""
-join s (h:l) = h ++ foldl (++) "" (map (\x -> s++x) l)
+-- join :: String -> [String] -> String
+-- join s [] = ""
+-- join s (h:l) = h ++ foldl (++) "" (map (\x -> s++x) l)
 
-instance Pretty Subst where
-  pretty s = "{" ++ () intern (filtSelfImage s) ++ "}"
-   where
-    intern :: Subst -> String
-    intern (Subst l) = join ", " (map str l)
-    str :: (VarName,Term) -> String
-    str (VarName n,t) = n ++ " -> " ++ (pretty t)
+-- instance Pretty Subst where
+--   pretty s = "{" ++ () intern (filtSelfImage s) ++ "}"
+--    where
+--     intern :: Subst -> String
+--     intern (Subst l) = join ", " (map str l)
+--     str :: (VarName,Term) -> String
+--     str (VarName n,t) = n ++ " -> " ++ (pretty t)
 
 -- 8.
 instance Vars Subst where
@@ -79,5 +79,15 @@ instance Vars Subst where
 
 
 -- 9.
--- instance Arbitrary Subst where
---   arbitrary = 
+instance Arbitrary Subst where
+  arbitrary = do
+    arity <- elements [1 .. 10]
+    Subst <$> replicateM arity arbitrary
+   where
+    replicateM :: Int -> Gen c -> Gen [c]
+    replicateM 0 _ = do return []
+    replicateM m f = do 
+      elem <- f
+      rest <- replicateM (m-1) f
+      return (elem : rest)
+
