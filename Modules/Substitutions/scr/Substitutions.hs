@@ -5,7 +5,7 @@ module Substitutions
     , single
     , apply
     , compose
---    , restrictTo
+    , restrictTo
     )
   where
 
