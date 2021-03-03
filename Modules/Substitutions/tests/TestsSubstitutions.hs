@@ -97,13 +97,28 @@ prop_allVars_0 :: VarName -> VarName -> Property
 prop_allVars_0 x1 x2 = 
   x1 /= x2 
   ==>
-  allVars (compose (single x2 (Var x1)) (single x1 (Var x2)))
+  (allVars (compose (single x2 (Var x1)) (single x1 (Var x2))) )
+  `is_set_eq`
+  [x1, x2]
 
 -- ∀s:domain(s) ⊆ allVars(s)
-
+prop_dom_subset_vars:: Subst -> Bool
+prop_dom_subset_vars s = (domain s) `is_subs` (allVars s)
 
 -- ∀xs:domain(restrictTo(empty,xs)) = {}
+prop_restrictTo_empty_leaves_empty_domain :: [VarName] -> Bool
+prop_restrictTo_empty_leaves_empty_domain xs = 
+  domain (restrictTo empty xs) == []
+
 -- ∀xs,s:domain(restrictTo(s,xs)) ⊆ xs
+prop_restrictTo_domain_leaves_subset :: [VarName] -> Subst -> Bool
+prop_restrictTo_domain_leaves_subset xs s = 
+  (domain (restrictTo s xs)) `is_subs` xs
+
+-- ∀xs:allVars(restrictTo(empty,xs)) = {}
+prop_restrictTo_empty_leaves_empty_vars :: [VarName] -> Bool
+prop_restrictTo_empty_leaves_empty_vars xs = 
+  allVars (restrictTo empty xs) == []
 
 -- Check all properties in this module:
 return []
