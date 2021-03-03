@@ -45,10 +45,8 @@ apply (Subst ((a, b):c)) (Var d)    = if a == d
 
 -- 5.
 -- compose :: Subst -> Subst -> Subst
-
-
 compose :: Subst -> Subst -> Subst
-compose (Subst lst1) (Subst lst2) = Subst (zip (lst1 ++ (zip fst (unzip lst2)) (map apply (Subst lst1) (snd (unzip lst2)))))
+compose (Subst a) (Subst b) = Subst (a ++ (zip (fst (unzip b)) (map (apply (Subst a)) (snd (unzip b)))))
 
 
 
