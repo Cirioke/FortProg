@@ -15,32 +15,31 @@ import SetsAsOrderedList (isElem,fromList)
 import PrettyPrint
 import Variables
 
+
 -- 1.
 data Subst = Subst [(VarName, Term)]
   deriving (Show)
 
+  
 -- 2.
 filtSelfImage :: Subst -> Subst
 filtSelfImage (Subst lst) = Subst (filter noSelfImage lst)
  where
   noSelfImage :: (VarName, Term) -> Bool
   noSelfImage (a,Var b) = a /= b
-  noSelfImage (_,_) = False
+  noSelfImage (_,_) = True
 
 domain :: Subst -> [VarName]
 domain subst = (\(Subst lst) -> fst (unzip lst)) (filtSelfImage subst)
-
--- a = Subst [(VarName "A",Var (VarName "B")),(VarName "C",Var (VarName "C"))]
 
 
 -- 3.
 empty :: Subst
 empty = Subst []
 
-
-
 single :: VarName -> Term -> Subst
-single a b = Subst [(a, b)]
+single a b = filtSelfImage (Subst [(a, b)])
+
 
 -- 4.
 apply :: Subst -> Term -> Term
@@ -50,14 +49,23 @@ apply (Subst ((a, b):c)) (Var d)    = if a == d
                                         then b
                                         else apply (Subst c) (Var d)
 
+
 -- 5.
 compose :: Subst -> Subst -> Subst
-compose (Subst a) (Subst b) = Subst (a ++ (zip (fst (unzip b)) (map (apply (Subst a)) (snd (unzip b)))))
+compose (Subst a) (Subst b) = filtSelfImage (Subst ((filtA a b) ++ (appB a b)))
+ where
+  filtA :: [(VarName,Term)] -> [(VarName,Term)] -> [(VarName,Term)]
+  filtA a b = filter (\(x,_) -> not (isElem x (fromList (fst (unzip b))))) a
+  appB :: [(VarName,Term)] -> [(VarName,Term)] -> [(VarName,Term)]
+  appB a b = zip (fst (unzip b)) (map (apply (Subst a)) (snd (unzip b)))
+
+  
 
 
 -- 6.
 restrictTo :: Subst -> [VarName] -> Subst
 restrictTo (Subst lst) names = Subst (filter (\(x,_) -> isElem x (fromList names)) lst)
+
 
 -- 7.
 
@@ -66,12 +74,13 @@ join s [] = ""
 join s (h:l) = h ++ foldl (++) "" (map (\x -> s++x) l)
 
 instance Pretty Subst where
-  pretty s = "{" ++ () intern (filtSelfImage s) ++ "}"
+  pretty s = "{" ++ intern (filtSelfImage s) ++ "}"
    where
     intern :: Subst -> String
-    intern (Subst l) = join ", " (map str l)
+    intern (Subst l) = join ", " (map str l) 
     str :: (VarName,Term) -> String
     str (VarName n,t) = n ++ " -> " ++ (pretty t)
+
 
 -- 8.
 instance Vars Subst where
