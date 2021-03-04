@@ -80,9 +80,9 @@ compose :: Subst -> Subst -> Subst
 compose (Subst a) (Subst b) = filtSelfImage (Subst ((filtA a b) ++ (appB a b))) 
  where
   filtA :: [(VarName,Term)] -> [(VarName,Term)] -> [(VarName,Term)]
-  filtA a b = filter (\(x,_) -> not (isElem x (fromList (fst (unzip b))))) a
+  filtA la lb = filter (\(x,_) -> not (isElem x (fromList (fst (unzip lb))))) la
   appB :: [(VarName,Term)] -> [(VarName,Term)] -> [(VarName,Term)]
-  appB a b = zip (fst (unzip b)) (map (apply (Subst a)) (snd (unzip b)))
+  appB la lb = zip (fst (unzip lb)) (map (apply (Subst la)) (snd (unzip lb)))
 
 
   
