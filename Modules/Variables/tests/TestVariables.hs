@@ -4,8 +4,24 @@ import Test.QuickCheck
 import Variables
 import Type
 
-unitTests_allVars_Term :: [(Term, [VarName])]
-unitTests_allVars_Term =
+-- \ Some helper function to treat lists like sets,
+-- is_subs determines wether all elements of one list are in anotherone.
+is_subs :: Eq a => [a] -> [a] -> Bool
+is_subs []     _   = True
+is_subs (x:xs) lst = (x `elem` lst) &&  (xs `is_subs` lst)
+
+-- \ Some helper function to treat lists like sets,
+-- is_set_eq determines wether all elements of one list are in anotherone
+-- and the other way around.
+is_set_eq :: Eq a => [a] -> [a] -> Bool
+is_set_eq l0 l1 = (l0 `is_subs` l1) && (l1 `is_subs` l0)
+
+
+prop_VarName :: VarName -> Bool
+prop_VarName v = allVars v == [v]
+
+unitTests_Term :: [(Term, [VarName])]
+unitTests_Term =
     -- 0
   [ ( Var (VarName "A")
     , [VarName "A"] ) 
@@ -53,14 +69,31 @@ unitTests_allVars_Term =
     , [VarName "K", VarName "L", VarName "M", VarName "N", VarName "O"] ) 
   ]
 
-prop_unit_allVars :: Int -> Property
-prop_unit_allVars i =    i < (length unitTests_allVars_Term)
+prop_unit_term :: Int -> Property
+prop_unit_term i =    i < (length unitTests_Term)
                       && i >= 0
                       ==> actual == expected
   where
-    (term, expected) = unitTests_allVars_Term !! i
+    (term, expected) = unitTests_Term !! i
     actual = allVars term
     
+prop_List_2_Term :: Term -> Term -> Bool
+prop_List_2_Term t0 t1 = (allVars t0 ++ allVars t1) `is_set_eq` (allVars [t0,t1])
+
+-- instance Vars a  => Vars [a] where
+--   allVarsSet = mapUnion allVarsSet
+
+-- instance (Vars a, Vars b) => Vars (a,b) where
+--   allVarsSet (a,b) = union (allVarsSet a) (allVarsSet b)
+
+-- instance Vars Rule where
+--   allVarsSet (Rule conc pres) = allVarsSet (conc:pres)
+
+-- instance Vars Prog where
+--   allVarsSet (Prog rules) = allVarsSet rules
+
+-- instance Vars Goal where
+--   allVarsSet (Goal terms) = allVarsSet terms
 
 
 
