@@ -1,4 +1,11 @@
-module Variables (Vars, allVars, allVarsSet) where
+module Variables 
+  (Vars
+  , allVars
+  , allVarsSet
+  , freshVars
+  , makeAnonym
+  , isAnonym
+  ) where
 
 import Type
 import SetsAsOrderedList
@@ -67,3 +74,10 @@ freshVars = concatMap appendLetters digitCombs
     appendLetters :: String -> [VarName]
     appendLetters cs = [VarName (l:cs)| l<-['A'..'Z']]
      
+
+makeAnonym :: VarName -> VarName
+makeAnonym (VarName str) = VarName ("0%$" ++ str)
+
+isAnonym :: VarName -> Bool
+isAnonym (VarName ('0':('%':('$':_))) ) = True
+isAnonym (VarName _                   ) = False
