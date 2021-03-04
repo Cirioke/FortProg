@@ -18,14 +18,14 @@ import Variables
 
 -- 1.
 data Subst = Subst [(VarName, Term)]
-  
+
 -- 2.
 noSelfImage :: (VarName, Term) -> Bool
 noSelfImage (a,Var b) = a /= b
 noSelfImage (_,_) = True
 
 filtSelfImage :: Subst -> Subst
-filtSelfImage (Subst lst) = doub_rem (Subst (filter noSelfImage lst))
+filtSelfImage (Subst lst) = Subst (filter noSelfImage lst)
 
 domain :: Subst -> [VarName]
 domain subst = (\(Subst lst) -> fst (unzip lst)) (filtSelfImage subst)
