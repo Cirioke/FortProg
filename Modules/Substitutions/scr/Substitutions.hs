@@ -11,15 +11,13 @@ module Substitutions
 
 import Test.QuickCheck
 import Type
-import SetsAsOrderedList (isElem,fromList)
+import SetsAsOrderedList (Set, isElem,fromList,toList)
 import PrettyPrint
 import Variables
 
 
 -- 1.
 data Subst = Subst [(VarName, Term)]
-  deriving (Show)
-
   
 -- 2.
 noSelfImage :: (VarName, Term) -> Bool
@@ -88,13 +86,22 @@ instance Vars Subst where
 -- 9.
 instance Arbitrary Subst where
   arbitrary = do
-    arity <- elements [1 .. 10]
-    Subst <$> replicateM arity arbitrary
+    arity  <- elements [1 .. 10]
+    domain <- replicateM arity arbitrary :: Gen [VarName]
+    image  <- replicateM arity arbitrary :: Gen [Term]
+    return (Subst (makeSubstList domain image))
    where
+    makeSubstList :: [VarName] -> [Term] -> [(VarName, Term)]
+    makeSubstList dom img = 
+      filter
+      (\ (v,t) -> Var v /= t)           -- list must not contain self images
+      (zip ((toList.fromList) dom) img)   -- domain must not contain duplicates
+
     replicateM :: Int -> Gen c -> Gen [c]
     replicateM 0 _ = do return []
-    replicateM m f = do 
-      elem <- f
-      rest <- replicateM (m-1) f
-      return (elem : rest)
+    replicateM m f = do elem <- f
+                        rest <- replicateM (m-1) f
+                        return (elem : rest)
 
+instance Show Subst where
+  show = pretty

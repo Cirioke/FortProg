@@ -22,8 +22,8 @@ instance Vars VarName where
   allVarsSet vName = insert vName empty
 
 instance Vars Term where
-  allVarsSet (Comb  _ terms ) = allVarsSet terms
-  allVarsSet  vName           = allVarsSet vName
+  allVarsSet (Comb _     terms ) = allVarsSet terms
+  allVarsSet (Var  vName       ) = allVarsSet vName
 
 instance Vars Rule where
   allVarsSet (Rule conc pres) = allVarsSet (conc:pres)
