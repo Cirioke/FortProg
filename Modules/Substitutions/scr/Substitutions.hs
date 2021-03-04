@@ -22,16 +22,15 @@ data Subst = Subst [(VarName, Term)]
 
   
 -- 2.
+noSelfImage :: (VarName, Term) -> Bool
+noSelfImage (a,Var b) = a /= b
+noSelfImage (_,_) = True
+
 filtSelfImage :: Subst -> Subst
-filtSelfImage (Subst lst) = Subst (filter noSelfImage lst)
- where
-  noSelfImage :: (VarName, Term) -> Bool
-  noSelfImage (a,Var b) = a /= b
-  noSelfImage (_,_) = True
+filtSelfImage (Subst lst) = doub_rem (Subst (filter noSelfImage lst))
 
 domain :: Subst -> [VarName]
 domain subst = (\(Subst lst) -> fst (unzip lst)) (filtSelfImage subst)
-
 
 -- 3.
 empty :: Subst
@@ -52,16 +51,16 @@ apply (Subst ((a, b):c)) (Var d)    = if a == d
 
 -- 5.
 compose :: Subst -> Subst -> Subst
-compose (Subst a) (Subst b) = filtSelfImage (Subst ((filtA a b) ++ (appB a b)))
+
+compose (Subst a) (Subst b) = filtSelfImage (Subst ((filtA a b) ++ (appB a b))) 
  where
   filtA :: [(VarName,Term)] -> [(VarName,Term)] -> [(VarName,Term)]
   filtA a b = filter (\(x,_) -> not (isElem x (fromList (fst (unzip b))))) a
   appB :: [(VarName,Term)] -> [(VarName,Term)] -> [(VarName,Term)]
   appB a b = zip (fst (unzip b)) (map (apply (Subst a)) (snd (unzip b)))
 
+
   
-
-
 -- 6.
 restrictTo :: Subst -> [VarName] -> Subst
 restrictTo (Subst lst) names = Subst (filter (\(x,_) -> isElem x (fromList names)) lst)
@@ -79,7 +78,6 @@ instance Pretty Subst where
     intern (Subst l) = join ", " (map str l) 
     str :: (VarName,Term) -> String
     str (VarName n,t) = n ++ " -> " ++ (pretty t)
-
 
 
 -- 8.
