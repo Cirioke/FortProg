@@ -3,9 +3,9 @@ module Main where
 import Type
 import PrettyPrint
 -- import Renaming
--- import SetsAsOrderedList
+import SetsAsOrderedList
 -- import SLDResolution
--- import Substitutions
+import Substitutions
 -- import Unification
 --  import AnonymVars
 import Variables
