@@ -14,12 +14,22 @@ ds (Comb a lA) (Comb b lB) = if a == b
  where
   f :: Maybe (Term, Term) -> [Term] -> [Term] -> Maybe (Term, Term)
   f Nothing (a:la) (b:lb) = f (ds a b) la lb
-  f Nothing []     _      = Nothing
+  f Nothing []    _       = Nothing
   f Nothing _     []      = Nothing
-  f x       _      _      = x
+  f x       _     _       = x
 
+
+unify :: Term -> Term -> Maybe Subst
+unify a b 
 
 {-
-unify :: Term -> Term -> Maybe Subst
-unify t0 t1 = const (single (VarName "TODO") (Var (VarName "")))-}
+"ds f(g,$1)  f($2,e) -> ($1,$2)"
+
+
+$2 -> g, $1 -> e
+
+{$1->$2,...}
+{_ -> _, A -> A}-}
+
+
 
