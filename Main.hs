@@ -2,12 +2,12 @@ module Main where
 
 import Type
 import PrettyPrint
--- import Renaming
+import Renaming
 import SetsAsOrderedList
--- import SLDResolution
+--import SLDResolution
 import Substitutions
--- import Unification
---  import AnonymVars
+import Unification
+import AnonymVars
 import Variables
 
 
