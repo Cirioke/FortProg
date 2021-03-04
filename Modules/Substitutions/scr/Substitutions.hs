@@ -18,7 +18,7 @@ import Variables
 
 -- 1.
 data Subst = Subst [(VarName, Term)]
-  
+
 -- 2.
 noSelfImage :: (VarName, Term) -> Bool
 noSelfImage (a,Var b) = a /= b
