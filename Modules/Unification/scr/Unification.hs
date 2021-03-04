@@ -6,6 +6,10 @@ import Substitutions
 import SetsAsOrderedList
 import Variables
 
+-- 1.
+-- \ Determines the Disagreement Set of Two terms, being the two first 
+--  different Entries found when traversing through two terms
+--  from left to righ.
 ds :: Term -> Term -> Maybe (Term, Term)
 ds (Var a)     (Var b)     = if a == b then Nothing else Just (Var a,Var b)
 ds (Var a)     (Comb b lB) = Just (Var a, Comb b lB)
@@ -21,7 +25,8 @@ ds (Comb a lA) (Comb b lB) = if (a == b) && (length lA == length lB)
   f x       _     _       = x
 
 
-
+-- 1.
+-- \ Determines a Most Common Unifyer of two terms if existent.
 unify :: Term -> Term -> Maybe Subst
 unify a b = f1 Substitutions.empty a b -- launch the unification with empty substitutuin
     where 
@@ -39,17 +44,6 @@ unify a b = f1 Substitutions.empty a b -- launch the unification with empty subs
 
 
 
-{-
-
-"ds f(g,$1)  f($2,e) -> ($1,$2)"
-
-
-$2 -> g, $1 -> e
-
-{$1->$2,...}
-{_ -> _, A -> A}
-
--}
 
 
 
