@@ -3,8 +3,8 @@ module Main where
 import Type
 import PrettyPrint
 import Renaming
-import qualified SetsAsOrderedList
--- import SLDResolution
+import SetsAsOrderedList
+--import SLDResolution
 import Substitutions
 import Unification
 import AnonymVars
