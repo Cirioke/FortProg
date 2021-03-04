@@ -26,7 +26,7 @@ _rename prop fresh lst x = apply subst x
 
     dom::[VarName]
     -- Underscores should not be replaced
-    dom = filter (\ x -> x /= (VarName "_") && prop x) vars
+    dom = filter (\ v -> v /= (VarName "_") && prop v) vars
 
     img::[Term]
     img = map Var (filter (not.(`elem` (vars ++ lst))) fresh)
