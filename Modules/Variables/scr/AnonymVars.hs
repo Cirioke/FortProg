@@ -74,6 +74,6 @@ instance AnonymVars Goal where
 
 instance AnonymVars a => AnonymVars [a] where
   _nameAnonym prefix = zipWith _nameAnonym nodeNames
-    where nodeNames = (map ((prefix ++ ).show) [0..])    
+    where nodeNames = (map ((prefix ++ ).(show :: Integer -> String)) [0..])    
 
   unnameAnonym = map unnameAnonym
