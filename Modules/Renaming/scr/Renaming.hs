@@ -1,4 +1,9 @@
-module Rename where
+module Renaming 
+  ( Rename
+  , rename
+  , renameAll
+  ) 
+ where
 
 import Type
 
@@ -11,8 +16,11 @@ class Vars a => Rename a where
   renameAll :: a -> a
   renameAll x = rename (allVars x) x
 
-instance Rename Term where
-  rename  (VarName name) = 
+getNewName :: [VarName] -> VarName
+getNewName lst = (fliter (`elem` lst) freshNames) !! 0
+
+-- instance Rename Term where
+--   rename lst (VarName name) = VarName (filter (`elem` lst) !! 0)
   
 
 
