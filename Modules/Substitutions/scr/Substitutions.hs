@@ -6,6 +6,7 @@ module Substitutions
     , apply
     , compose
     , restrictTo
+    , Substitutable
     )
   where
 
@@ -39,12 +40,29 @@ single a b = filtSelfImage (Subst [(a, b)])
 
 
 -- 4.
-apply :: Subst -> Term -> Term
-apply (Subst [])         a          = a
-apply a                  (Comb b c) = Comb b (map (apply a) c)  
-apply (Subst ((a, b):c)) (Var d)    = if a == d
-                                        then b
-                                        else apply (Subst c) (Var d)
+-- \ A class for objects to whitch a substitution can be applyed
+class Vars a => Substitutable a where
+  -- \ Apply a substitution to an object (containing variables).
+  apply :: Subst -> a -> a
+
+instance Substitutable Term where
+  apply (Subst [])         a          = a
+  apply a                  (Comb b c) = Comb b (map (apply a) c)  
+  apply (Subst ((a, b):c)) (Var d)    = if a == d
+                                          then b
+                                          else apply (Subst c) (Var d)
+
+instance Substitutable Rule where
+  apply s (Rule conc assumps) = Rule (apply s conc) (apply s assumps)
+
+instance Substitutable Prog where
+  apply s (Prog rules) = Prog (apply s rules)
+
+instance Substitutable Goal where
+  apply s (Goal terms) = Goal (apply s terms)
+
+instance Substitutable a => Substitutable [a] where
+  apply s lst = map (apply s) lst
 
 
 -- 5.
