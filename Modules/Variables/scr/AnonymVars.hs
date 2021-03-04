@@ -3,6 +3,7 @@ module AnonymVars
     , isAnonym
     , nameAnonym
     , unnameAnonym
+    , freshAnonym
     ) 
   where
 
@@ -20,6 +21,9 @@ isAnonym :: VarName -> Bool
 isAnonym (VarName ('0':('%':('$':_))) ) = True
 isAnonym (VarName _                   ) = False
 
+-- \ A infinite list for new anonym variables.
+freshAnonym::[VarName]
+freshAnonym = map makeAnonym freshVars
 
 -- \ A class for objects where variable renaming is sensable.
 class (Vars a) => AnonymVars a where

@@ -60,10 +60,12 @@ union (Set xs1) (Set xs2) = Set (ounion xs1 xs2)
 ----------------------------------------------------------------------
 ----------------------- OWN CODE -------------------------------------
 ----------------------------------------------------------------------
--- TODO: Comments
+
+-- \ Unites a list of sets.
 unionAll :: Ord a => [Set a] -> Set a
 unionAll = foldr union empty
 
+-- \ Maps a given list to a list of sets and unite the result.
 mapUnion :: Ord a => (b -> Set a) -> [b]  -> Set a
 mapUnion func lst = unionAll (map func lst)
 
