@@ -96,7 +96,7 @@ restrictTo (Subst lst) names = Subst (filter (\(x,_) -> isElem x (fromList names
 -- 7.
 -- \ Helper function to join a list of string together.
 join :: String -> [String] -> String
-join s [] = ""
+join _ [] = ""
 join s (h:l) = h ++ foldl (++) "" (map (\x -> s++x) l)
 
 instance Pretty Subst where
@@ -116,23 +116,23 @@ instance Vars Subst where
 -- 9.
 instance Arbitrary Subst where
   arbitrary = do
-    arity  <- elements [1 .. 10]
-    domain <- replicateM arity arbitrary :: Gen [VarName]
-    image  <- replicateM arity arbitrary :: Gen [Term]
-    return (Subst (makeSubstList domain image))
+    arity <- elements [1 .. 10]
+    domai <- replicateM arity arbitrary :: Gen [VarName]
+    image <- replicateM arity arbitrary :: Gen [Term]
+    return (Subst (makeSubstList domai image))
    where
     makeSubstList :: [VarName] -> [Term] -> [(VarName, Term)]
     makeSubstList dom img = 
       filter
-      (\ (v,t) -> Var v /= t)           -- list must not contain self images
-      (zip ((toList.fromList) dom) img)   -- domain must not contain duplicates
+      (\ (v,t) -> Var v /= t)            -- list must not contain self images
+      (zip ((toList.fromList) dom) img)  -- domain must not contain duplicates
 
     -- \Helper fuction to generate a arbirary list of given lenght
     replicateM :: Int -> Gen c -> Gen [c]
     replicateM 0 _ = do return []
-    replicateM m f = do elem <- f
+    replicateM m f = do e    <- f
                         rest <- replicateM (m-1) f
-                        return (elem : rest)
+                        return (e : rest)
 
 instance Show Subst where
   show = pretty
