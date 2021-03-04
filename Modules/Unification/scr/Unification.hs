@@ -10,7 +10,7 @@ ds :: Term -> Term -> Maybe (Term, Term)
 ds (Var a)     (Var b)     = if a == b then Nothing else Just (Var a,Var b)
 ds (Var a)     (Comb b lB) = Just (Var a, Comb b lB)
 ds (Comb a lA) (Var b)     = Just (Var b, Comb a lA)
-ds (Comb a lA) (Comb b lB) = if a == b
+ds (Comb a lA) (Comb b lB) = if (a == b) && (length lA == length lB)
                                then f Nothing lA lB
                                else Just (Comb a lA, Comb b lB)
  where
