@@ -11,8 +11,10 @@ module Substitutions
   where
 
 import Test.QuickCheck
+
 import Type
-import SetsAsOrderedList (Set, isElem,fromList,toList)
+
+import SetsAsOrderedList hiding ( empty )
 import PrettyPrint
 import Variables
 
