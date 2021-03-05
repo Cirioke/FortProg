@@ -45,7 +45,6 @@ prop_unit_prettyPrint i =    i < (length unitTests_pretty_Term)
   where
     (term, expected) = unitTests_pretty_Term !! i
     actual = pretty term
-    
 
 
 

@@ -13,6 +13,7 @@ is_subs :: Eq a => [a] -> [a] -> Bool
 is_subs []     _   = True
 is_subs (x:xs) lst = (x `elem` lst) &&  (xs `is_subs` lst)
 
+
 -- \ Some helper function to treat lists like sets,
 -- is_set_eq determines wether all elements of one list are in anotherone
 -- and the other way around.

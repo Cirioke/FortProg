@@ -28,7 +28,7 @@ data Subst = Subst [(VarName, Term)]
 -- represents a identity substitution.
 noSelfImage :: (VarName, Term) -> Bool
 noSelfImage (a,Var b) = a /= b
-noSelfImage (_,_) = True
+noSelfImage (_,_)     = True
 
 -- \ Helperfuntion filtering all idetity substitutions out.
 filtSelfImage :: Subst -> Subst
@@ -37,6 +37,7 @@ filtSelfImage (Subst lst) = Subst (filter noSelfImage lst)
 -- \ Returns the variable names that will be effected by the substitution.
 domain :: Subst -> [VarName]
 domain subst = (\(Subst lst) -> fst (unzip lst)) (filtSelfImage subst)
+
 
 -- 3.
 -- \ Constructor for an the identity substiution.
@@ -55,11 +56,11 @@ class Vars a => Substitutable a where
   apply :: Subst -> a -> a
 
 instance Substitutable Term where
-  apply (Subst [])         a          = a
-  apply a                  (Comb b c) = Comb b (map (apply a) c)  
-  apply (Subst ((a, b):c)) (Var d)    = if a == d
-                                          then b
-                                          else apply (Subst c) (Var d)
+  apply (Subst [])         t           = t
+  apply s                  (Comb n ts) = Comb n (map (apply s) ts)  
+  apply (Subst ((sv, st):sl)) (Var v)     = if sv == v
+                                           then st
+                                           else apply (Subst sl) (Var v)
 
 instance Substitutable Rule where
   apply s (Rule conc assumps) = Rule (apply s conc) (apply s assumps)

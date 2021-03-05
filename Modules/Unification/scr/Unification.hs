@@ -31,13 +31,13 @@ ds (Comb c0 ts0) (Comb c1 ts1) = if (c0 == c1) && (length ts0 == length ts1)
 
 -- 2.
 -- \ Determines a Most Common Unifyer of two terms if existent.
-unify :: Term -> Term -> Maybe Subst
+unify :: Term -> Term -> Maybe Subst   
 unify t0 t1 = if t0 == t1
                 then Just Substitutions.empty
                 else case ds t0 t1 of
                   -- If the disagreement set contains a variable do some recursion.
                   Just (Var vName, t) -> do
-                    occurCheck vName t
+                    occurCheck vName t  -- Nothing results in Fail
                     newSub  <- Just (single vName t)
                     restSub <- unify (apply newSub t0) (apply newSub t1)
                     return (compose newSub restSub)
@@ -49,6 +49,7 @@ unify t0 t1 = if t0 == t1
   occurCheck v t = if isElem v (allVarsSet t)
                      then Nothing  -- Fail
                      else Just ()  -- no fail
+
 
 
 
