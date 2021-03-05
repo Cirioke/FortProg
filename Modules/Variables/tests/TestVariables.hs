@@ -99,4 +99,5 @@ prop_List_2_Term t0 t1 = (allVars t0 ++ allVars t1) `is_set_eq` (allVars [t0,t1]
 
 -- Check all properties in this module:
 return []
+testAll:: IO Bool
 testAll = $quickCheckAll

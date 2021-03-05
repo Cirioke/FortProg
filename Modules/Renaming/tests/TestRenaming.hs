@@ -5,7 +5,7 @@ import Test.QuickCheck
 import Type
 
 import Variables
-import Renameing
+import Renaming
 
 -- \ Some helper function to treat lists like sets,
 -- intersection lists all common elements of tow lists
@@ -79,4 +79,5 @@ prop_var_num_at_most_grows_Rule xs r =
 
 -- Check all properties in this module:
 return []
+testAll:: IO Bool
 testAll = $quickCheckAll

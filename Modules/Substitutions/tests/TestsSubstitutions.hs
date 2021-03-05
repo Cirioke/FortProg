@@ -123,4 +123,5 @@ prop_restrictTo_empty_leaves_empty_vars xs =
 
 -- Check all properties in this module:
 return []
+testAll:: IO Bool
 testAll = $quickCheckAll

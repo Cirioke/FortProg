@@ -1,5 +1,5 @@
 module Variables 
-  (Vars
+  ( Vars
   , allVars
   , allVarsSet
   , freshVars

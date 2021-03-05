@@ -13,6 +13,8 @@ module SetsAsOrderedList
   )
  where
 
+import Test.QuickCheck
+
 ----------------------------------------------------------------------
 ----------------------- CODE FROM LECTURE-----------------------------
 ----------------------------------------------------------------------
@@ -53,6 +55,11 @@ union (Set xs1) (Set xs2) = Set (ounion xs1 xs2)
                             | otherwise = y : ounion (x:xs) ys
 -- > linear complexity w.r.t. the size of both sets!
 
+
+instance (Ord a, Arbitrary a) => Arbitrary (Set a) where
+  arbitrary = do
+    xs <- arbitrary
+    return ((foldr :: (a -> b -> b) -> b -> [a] -> b) insert empty xs)
 
 ----------------------------------------------------------------------
 ----------------------- OWN CODE -------------------------------------

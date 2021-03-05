@@ -29,12 +29,6 @@ prop_union :: Elem -> Set Elem -> Set Elem -> Bool
 prop_union x s1 s2 =
   isElem x (union s1 s2) == (isElem x s1 || isElem x s2)
 
-instance (Ord a, Eq a, Arbitrary a) => Arbitrary (Set a) where
-  arbitrary = do
-    xs <- arbitrary
-    return ((foldr :: (a -> b -> b) -> b -> [a] -> b) insert empty xs)
-
-
 ----------------------------------
 -- Own Code
 ----------------------------------
@@ -77,4 +71,5 @@ prop_fromToList1 set = (fromList.toList) set == set
 
 -- Executing all tests:
 return []
+testAll:: IO Bool
 testAll = $quickCheckAll

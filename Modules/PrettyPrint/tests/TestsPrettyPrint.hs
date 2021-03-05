@@ -50,4 +50,5 @@ prop_unit_prettyPrint i =    i < (length unitTests_pretty_Term)
 
 -- Check all properties in this module:
 return []
+testAll:: IO Bool
 testAll = $quickCheckAll
