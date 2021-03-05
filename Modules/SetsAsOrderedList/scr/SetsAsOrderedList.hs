@@ -22,7 +22,7 @@ module SetsAsOrderedList
 -- Credit to Michael Hanus
 -- Implementing sets as ordered lists
 data Set a = Set [a]
-  deriving Show
+  deriving (Show, Eq)
 
 -- Credit to Michael Hanus
 empty :: Set a
