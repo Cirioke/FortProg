@@ -18,7 +18,7 @@ subst :: Subst
 subst = empty
 
 anonym :: Bool
-anonym = isAnonym (VarName "XZY")
+anonym = isNamed (VarName "XZY")
 
 term :: Term
 term = Comb "f" [Var (VarName "A"), Var (VarName "B")]

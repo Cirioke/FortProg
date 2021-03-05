@@ -1,5 +1,6 @@
 module AnonymVars 
     ( AnonymVars
+    , isNamed
     , isAnonym
     , nameAnonym
     , unnameAnonym
@@ -13,17 +14,22 @@ import Variables
 
 
 -- \ Returns a version of a variable marked as anonym.
-makeAnonym :: VarName -> VarName
-makeAnonym (VarName str) = VarName ("0%$" ++ str)
+makeNamed :: VarName -> VarName
+makeNamed (VarName str) = VarName ("0%$" ++ str)
 
--- \ Returns wether a variable is marked as anonym
+-- \ Returns wether a variable is a named anonym variable.
+isNamed :: VarName -> Bool
+isNamed (VarName ('0':('%':('$':_))) ) = True
+isNamed (VarName _                   ) = False
+
+-- \ returns wether a variable is a named or unnamed anonym Variable
 isAnonym :: VarName -> Bool
-isAnonym (VarName ('0':('%':('$':_))) ) = True
-isAnonym (VarName _                   ) = False
+isAnonym v =   v == (VarName "_") 
+            || isNamed v
 
 -- \ A infinite list for new anonym variables.
 freshAnonym::[VarName]
-freshAnonym = map makeAnonym freshVars
+freshAnonym = map makeNamed freshVars
 
 -- \ A class for objects where variable renaming is sensable.
 class (Vars a) => AnonymVars a where
@@ -43,11 +49,11 @@ class (Vars a) => AnonymVars a where
  
 
 instance AnonymVars Term where
-  _nameAnonym prefix (Var (VarName "_") ) = Var (makeAnonym (VarName prefix))
+  _nameAnonym prefix (Var (VarName "_") ) = Var (makeNamed (VarName prefix))
   _nameAnonym _      (Var  vName        ) = Var vName
   _nameAnonym prefix (Comb cName      ts) = Comb cName (_nameAnonym prefix ts)  
     
-  unnameAnonym var@(Var vName) | isAnonym vName = Var (VarName "_")
+  unnameAnonym var@(Var vName) | isNamed vName = Var (VarName "_")
                                | otherwise      = var
   unnameAnonym (Comb cName terms) = Comb cName (unnameAnonym terms)
 
