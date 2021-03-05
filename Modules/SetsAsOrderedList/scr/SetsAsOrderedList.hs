@@ -13,9 +13,6 @@ module SetsAsOrderedList
   )
  where
 
--- import Test.QuickCheck #Redundant
--- import Data.List (sort) #Redundant
-
 ----------------------------------------------------------------------
 ----------------------- CODE FROM LECTURE-----------------------------
 ----------------------------------------------------------------------
