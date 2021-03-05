@@ -1,4 +1,4 @@
-module Renameing 
+module Renaming 
   ( rename
   , renameNamed
   , renameUnnamed
