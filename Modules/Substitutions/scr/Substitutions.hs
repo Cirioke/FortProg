@@ -126,13 +126,13 @@ instance Arbitrary Subst where
     makeSubstList :: [VarName] -> [Term] -> [(VarName, Term)]
     makeSubstList dom img = 
       filter
-      (\ (v,t) -> Var v /= t)            -- list must not contain self images
+      noSelfImage                        -- list must not contain self images
       (zip ((toList.fromList) dom) img)  -- domain must not contain duplicates
 
     -- \Helper fuction to generate a arbirary list of given lenght
     replicateM :: Int -> Gen c -> Gen [c]
     replicateM 0 _ = do return []
-    replicateM m f = do e    <- f
+    replicateM m f = do e    <- f 
                         rest <- replicateM (m-1) f
                         return (e : rest)
 
