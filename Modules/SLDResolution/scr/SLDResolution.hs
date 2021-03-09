@@ -30,17 +30,6 @@ sld p g@(Goal (literal:terms)) = SLDTree g (childs renamed_p)
        newGoal   <- [Goal (apply mcu (as ++ terms))]
        return (mcu, sld p newGoal)
 
-bfs :: SLDTree -> [Subst]
-bfs (SLDTree (Goal []) _      ) = [empty]
-bfs (SLDTree (Goal _ ) childs ) = foldr sortAndCompose [] childs
-  where 
-    sortAndCompose:: (Subst, SLDTree) -> [Subst] -> [Subst]
-    sortAndCompose (sub, tree) subs  = case tree of
-      (SLDTree (Goal []) _) -> compose empty sub : subs
-      _                     -> subs ++ map ((flip compose) sub) (bfs tree)
-
-
-
 -- 3.
 type Strategy = SLDTree -> [Subst]
 
@@ -53,16 +42,20 @@ dfs (SLDTree g         childs ) = concatMap combine childs
   combine (s,tr) = map  ((flip compose) s) (dfs tr)
 
 
+-- 4.
+bfs :: SLDTree -> [Subst]
+bfs (SLDTree (Goal []) _      ) = [empty]
+bfs (SLDTree (Goal _ ) childs ) = foldr sortAndCompose [] childs
+  where 
+    sortAndCompose:: (Subst, SLDTree) -> [Subst] -> [Subst]
+    sortAndCompose (sub, tree) subs  = case tree of
+      (SLDTree (Goal []) _) -> compose empty sub : subs
+      _                     -> subs ++ map ((flip compose) sub) (bfs tree)
 
 
-
-
-
-
-
-
-
-
+-- 5.
+solveWith :: Prog -> Goal -> Strategy -> [Subst]
+solveWith p g s = s (sld p g)
 
 
 
