@@ -81,3 +81,4 @@ renameToNamed lst = nameAnonym . (renameUnnamed lst)
 renameToUnnamed :: (Vars a, AnonymVars a,  Substitutable a) 
                 => [VarName] -> a -> a
 renameToUnnamed lst = (renameUnnamed lst) . unnameAnonym
+

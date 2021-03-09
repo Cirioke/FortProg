@@ -49,3 +49,6 @@ data Goal = Goal [Term]
 
 
 
+
+  
+  
