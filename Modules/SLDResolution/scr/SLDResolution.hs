@@ -1,26 +1,33 @@
 module SLDResolution where
 
 import Data.Maybe
-import Substitutions
-import SetsAsOrderedList
+
 import Type
+
+import SetsAsOrderedList
+
+import Substitutions
 import Unification
 import Renaming
-import Variables
+
 
 -- 1.
 data SLDTree = SLDTree Goal [(Subst,SLDTree)]
 
 -- 2.
 sld :: Prog -> Goal -> SLDTree
-sld p g = SLDTree g (childs (rename (allVars g) p) g)
+sld _ g@(Goal []             ) = SLDTree Goal g
+sld p g@(Goal (literal:terms)) = SLDTree g (childs renamed_p)
  where 
-  childs :: Prog -> Goal -> [(Subst,SLDTree)]
-  childs prog@(Prog rules) (Goal (literal:terms)) = 
+  renamed_p :: Prog
+  renamed_p = rename (allVars g) p
+
+  childs :: Prog -> [(Subst,SLDTree)]
+  childs (Prog rules) = 
     do Rule c as <- rules
        mcu       <- maybeToList(unify c literal)
-       return (mcu, sld prog (Goal (apply mcu (as ++ terms))))  
-  childs _ (Goal []) = []
+       newGoal   <- [Goal (apply mcu (as ++ terms)]
+       return (mcu, sld p newGoal)
 
 
 -- 3.
