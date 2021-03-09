@@ -11,7 +11,6 @@ import Variables
 -- 1.
 data SLDTree = SLDTree Goal [(Subst,SLDTree)]
 
-
 -- 2.
 sld :: Prog -> Goal -> SLDTree
 sld p g = SLDTree g (childs (rename (allVars g) p) g)
