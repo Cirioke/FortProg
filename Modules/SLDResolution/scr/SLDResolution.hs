@@ -2,13 +2,15 @@ module SLDResolution where
 
 import Data.Maybe
 
+import Type
+
+import PrettyPrint
+import Variables
 import Substitutions
 import SetsAsOrderedList hiding ( empty )
-import Type
 import Unification
 import Renaming
-import Variables
-import PrettyPrint
+
 
 -- 1.
 data SLDTree = SLDTree Goal [(Subst,SLDTree)]
@@ -27,6 +29,17 @@ sld p g@(Goal (literal:terms)) = SLDTree g (childs renamed_p)
        mcu       <- maybeToList(unify c literal)
        newGoal   <- [Goal (apply mcu (as ++ terms))]
        return (mcu, sld p newGoal)
+
+bfs :: SLDTree -> [Subst]
+bfs (SLDTree (Goal []) _      ) = [empty]
+bfs (SLDTree (Goal _ ) childs ) = foldr sortAndCompose [] childs
+  where 
+    sortAndCompose:: (Subst, SLDTree) -> [Subst] -> [Subst]
+    sortAndCompose (sub, tree) subs  = case tree of
+      (SLDTree (Goal []) _) -> compose empty sub : subs
+      _                     -> subs ++ map ((flip compose) sub) (bfs tree)
+
+
 
 -- 3.
 type Strategy = SLDTree -> [Subst]
