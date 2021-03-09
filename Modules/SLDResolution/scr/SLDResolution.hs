@@ -41,17 +41,6 @@ dfs (SLDTree g         childs ) = concatMap combine childs
 
 
 
--- t1 = Comb "f" [Var (VarName "B"), Var (VarName "_"), Comb "true" []]
-t2 = Comb "." [Comb "true" [], Comb "." [Comb "g" [Var (VarName "C")], Comb "[]" []]]
--- t3 = Comb "." [Comb "1" [], Comb "." [Comb "2" [], Comb "." [Comb "3" [], Comb "[]" []]]]
-
--- f(a,b).
-t1 = Comb "f" [Comb "a" [], Comb "b" []]
-r1 = Rule t1 []
-
-p = Prog [r1]
-
-g = Goal [Comb "f" [Comb "a" [], Var (VarName "X")]]
 
 
 
