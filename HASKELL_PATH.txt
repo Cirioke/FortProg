@@ -15,3 +15,7 @@
 /Modules/Variables/tests
 /Modules/SetsAsOrderedList/scr
 /Modules/SetsAsOrderedList/tests
+/Modules/Sessioner/scr
+
+
+

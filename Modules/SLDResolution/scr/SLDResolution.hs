@@ -23,7 +23,7 @@ sld p g@(Goal (literal:terms)) = SLDTree gNamed (childs pRenamedNamed)
  where 
   -- --Modular Version:
   gNamed = rename [] g
-  pRenamedNamed = rename (AllVars g) p
+  pRenamedNamed = rename (allVars g) p
 
   -- Our Specific Version:
   -- (gNamed, pNamed) = nameAnonym (g, p)
