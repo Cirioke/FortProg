@@ -44,10 +44,13 @@ _rename prop fresh lst x = apply subst x
 -- \ Renaiming all Variables within (second parameter).
 -- Variable names given in the first parameter won't be used in renaming.
 -- Underscores will be replaced by some unique anonym variable name.
--- So this fuction should be called only objects in unnamed mode.
+-- Anonym variables will replaced by fresh anonym variables.
+-- So this fuction can be called on objects in unnamed, named or mixed mode,
+-- and will securly end up in named mode.
 rename :: (Vars a, AnonymVars a,  Substitutable a) 
        => [VarName] -> a -> a
-rename = renameToNamed
+rename lst =  (renameToNamed   lst) 
+            . (renameToUnnamed lst)
              
 -- \ Renaiming all Variables within (second parameter).
 -- Variable names given in the first parameter won't be used in renaming.
@@ -72,7 +75,7 @@ renameUnnamed = _rename (\ v -> v /= VarName "_") freshVars
 -- So this fuction should be called only objects in unnamed mode.
 renameToNamed :: (Vars a, AnonymVars a,  Substitutable a) 
                 => [VarName] -> a -> a
-renameToNamed lst = nameAnonym . (renameUnnamed lst)
+renameToNamed lst = (renameNamed lst) . nameAnonym  
 
 -- \ Renaiming all Variables within (second parameter).
 -- Variable names given in the first parameter won't be used in renaming.

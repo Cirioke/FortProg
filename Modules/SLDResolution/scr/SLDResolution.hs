@@ -19,10 +19,15 @@ data SLDTree = SLDTree Goal [(Subst,SLDTree)]
 -- 2.
 sld :: Prog -> Goal -> SLDTree
 sld _ g@(Goal []             ) = SLDTree g []
-sld p g@(Goal (literal:terms)) = SLDTree g (childs renamed_p)
+sld p g@(Goal (literal:terms)) = SLDTree gNamed (childs pRenamedNamed)
  where 
-  renamed_p :: Prog
-  renamed_p = rename (allVars g) p
+  -- --Modular Version:
+  gNamed = rename [] g
+  pRenamedNamed = rename (AllVars g) p
+
+  -- Our Specific Version:
+  -- (gNamed, pNamed) = nameAnonym (g, p)
+  -- pRenamedNamed = renameNamed (allVars gNamed) pNamed
 
   childs :: Prog -> [(Subst,SLDTree)]
   childs (Prog rules) = 
