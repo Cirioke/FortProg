@@ -63,20 +63,17 @@ bfs (SLDTree (Goal _ ) edges ) = concatMap combine sortedEdges
     toLeaf (_, _           ) = False
 
 
-
 -- 5.
 
 -- todo: dfs sollte nur listen von singles ausgeben
---       solveWith soll keine anonymen variablen in substitutionen zurückgeben
---       eine möglichkeit zei Vars variablen gleichzeitig zu renamen (nameAnonymHack weg bekommen)
 
 solveWith :: Prog -> Goal -> Strategy -> [Subst]
-solveWith p g s = (\(p,g) -> filt (s (sld p g)) (nameAnonymHack p g))
+solveWith p g s = filt (s (sld p g))
  where
-  -- #HACKY  name Anonyms of Prog und Goal in one go 
-  nameAnonymHack :: Prog -> Goal -> (Prog, Goal)
-  nameAnonymHack (Prog rs) (Goal g) =  
-      (\((Rule _ ts):nrs) -> (Prog nrs, Goal ts))(nameAnonym ((Rule (Comb "f" []) g ):rs))
+  filt :: [Subst] -> [Subst]
+  filt ss = map f ss
+  f :: Subst -> Subst 
+  f su =  (restrictTo su (filter (isNamed) (domain su)))
 
 
 

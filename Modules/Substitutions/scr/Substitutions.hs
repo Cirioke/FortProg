@@ -23,6 +23,7 @@ import Variables
 -- \ Datatype representing substitutions.
 data Subst = Subst [(VarName, Term)]
 
+
 -- 2.
 -- \ Helperfunction returning wether the tuple 
 -- represents a identity substitution.
