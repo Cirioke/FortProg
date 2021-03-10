@@ -8,6 +8,8 @@ module Sessioner
   , setPath
   , setProg
   , setStrategy
+  , isAlive
+  , kill
   ) 
  where
 
