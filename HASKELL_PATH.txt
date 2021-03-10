@@ -1,6 +1,4 @@
 /Modules
-/Modules/InteraktiveEnvironment/scr
-/Modules/InteraktiveEnvironment/tests
 /Modules/PrettyPrint/scr
 /Modules/PrettyPrint/tests
 /Modules/Renaming/scr

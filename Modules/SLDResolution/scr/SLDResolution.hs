@@ -4,11 +4,9 @@ import Data.Maybe
 
 import Type
 
-import PrettyPrint
 import Variables
 import AnonymVars
 import Substitutions
-import SetsAsOrderedList hiding ( empty )
 import Unification
 import Renaming
 
@@ -41,7 +39,7 @@ type Strategy = SLDTree -> [Subst]
 
 dfs :: Strategy
 dfs (SLDTree (Goal []) _      ) = [empty]
-dfs (SLDTree g         childs ) = concatMap combine childs
+dfs (SLDTree _         childs ) = concatMap combine childs
  where 
   combine :: (Subst, SLDTree) -> [Subst]
   combine (s,tr) = map  ((flip compose) s) (dfs tr)
@@ -50,7 +48,7 @@ dfs (SLDTree g         childs ) = concatMap combine childs
 -- 4.
 bfs :: Strategy
 bfs (SLDTree (Goal []) _      ) = [empty]
-bfs (SLDTree (Goal _ ) edges ) = concatMap combine sortedEdges
+bfs (SLDTree _         edges ) = concatMap combine sortedEdges
   where 
     combine :: (Subst, SLDTree) -> [Subst]
     combine (s,tr) = map  ((flip compose) s) (dfs tr)
