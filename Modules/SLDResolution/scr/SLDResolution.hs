@@ -35,7 +35,6 @@ type Strategy = SLDTree -> [Subst]
 
 dfs :: Strategy
 dfs (SLDTree (Goal []) _      ) = [empty]
-dfs (SLDTree _         []     ) = [] 
 dfs (SLDTree g         childs ) = concatMap combine childs
  where 
   combine :: (Subst, SLDTree) -> [Subst]
@@ -43,14 +42,19 @@ dfs (SLDTree g         childs ) = concatMap combine childs
 
 
 -- 4.
-bfs :: SLDTree -> [Subst]
+bfs :: Strategy
 bfs (SLDTree (Goal []) _      ) = [empty]
-bfs (SLDTree (Goal _ ) childs ) = foldr sortAndCompose [] childs
+bfs (SLDTree (Goal _ ) edges ) = concatMap combine sortedEdges
   where 
-    sortAndCompose:: (Subst, SLDTree) -> [Subst] -> [Subst]
-    sortAndCompose (sub, tree) subs  = case tree of
-      (SLDTree (Goal []) _) -> compose empty sub : subs
-      _                     -> subs ++ map ((flip compose) sub) (bfs tree)
+    combine :: (Subst, SLDTree) -> [Subst]
+    combine (s,tr) = map  ((flip compose) s) (dfs tr)
+
+    sortedEdges :: [(Subst, SLDTree)]
+    sortedEdges = (filter toLeaf edges) ++ (filter (not.toLeaf) edges)
+
+    toLeaf :: (Subst, SLDTree) -> Bool
+    toLeaf (_, SLDTree _ []) = True
+    toLeaf (_, _           ) = False
 
 
 -- 5.

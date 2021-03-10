@@ -1,34 +1,49 @@
-module Main where
-
 import Type
+import Parser
+
 import PrettyPrint
-import Renaming
-import qualified SetsAsOrderedList
---import SLDResolution
-import Substitutions
-import Unification
-import AnonymVars
 import Variables
+import AnonymVars
+import Substitution
+import Unification
+import Renaming
+import SLDResolution
 
 
-set :: SetsAsOrderedList.Set Int
-set = SetsAsOrderedList.empty
 
-subst :: Subst
-subst = empty
 
-anonym :: Bool
-anonym = isNamed (VarName "XZY")
-
-term :: Term
-term = Comb "f" [Var (VarName "A"), Var (VarName "B")]
-
-renamed_term::Term
-renamed_term = rename [] term
-
-unificator :: Maybe Subst
-unificator = unify term renamed_term
-
+parse 
 main :: IO ()
-main = do putStrLn (pretty renamed_term)
-          print (allVars renamed_term)
+main = do 
+  <- getLine
+
+
+helpString :: String
+helpString =
+  """Commands available from the prompt:
+    <goal>      Solves/proves the specified goal.
+    :h          Shows this help message.
+    :l <file>   Loads the specified file.
+    :q          Exits the interactive environment.
+    :r          Reloads the last loaded file.
+    :s <strat>  Sets the specified search strategy
+                where <strat> is one of 'dfs', 'bfs', or 'iddfs'"""
+
+expectoCommando :: IO ()
+expectoCommando = do putStr "?- "
+                     cmd <- getLine
+                     case cmd of 
+                       (':':(sc:arg) -> (getDirective sc) parsearg
+                       _       ->  
+
+
+
+registerCommando :: IO()
+registerCommando  "<>"
+
+
+
+
+parse "a(0,B,_),b." :: Either String Goal
+
+parseFile "./PrologTestExamples/anon.pl" :: IO (Either String Prog)
