@@ -22,3 +22,12 @@ b(b).
 % in the goal, the solution should be the empty substitution.
 % Note that if anonymous variables are not correctly handled, there probably
 % will not be any solutions.
+
+
+% ["anon",("p(A,B).","{A -> a, B -> b}"),("p(_,_).","{}"),("q.","{}")]
+
+
+
+
+
+
