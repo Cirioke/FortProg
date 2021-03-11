@@ -1,6 +1,8 @@
 {-# LANGUAGE TemplateHaskell #-}
 
 import Test.QuickCheck
+
+import PrettyPrint
 import Variables
 import Type
 

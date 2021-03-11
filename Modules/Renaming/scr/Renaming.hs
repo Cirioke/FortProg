@@ -49,8 +49,12 @@ _rename prop fresh lst x = apply subst x
 -- and will securly end up in named mode.
 rename :: (Vars a, AnonymVars a,  Substitutable a) 
        => [VarName] -> a -> a
-rename lst =  (renameToNamed   lst) 
-            . (renameToUnnamed lst)
+rename lst x =   renameNamed (oldVars ++ lst)
+               $ nameAnonym
+               $ unnameAnonym x
+  where oldVars = allVars x
+        
+
              
 -- \ Renaiming all Variables within (second parameter).
 -- Variable names given in the first parameter won't be used in renaming.

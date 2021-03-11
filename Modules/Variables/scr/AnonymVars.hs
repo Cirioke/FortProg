@@ -83,3 +83,11 @@ instance AnonymVars a => AnonymVars [a] where
     where nodeNames = (map ((prefix ++ ).(show :: Integer -> String)) [0..])    
 
   unnameAnonym = map unnameAnonym
+
+
+instance (AnonymVars a, AnonymVars b) => AnonymVars (a,b) where
+  _nameAnonym p (x, y) = ( _nameAnonym (p ++ ".fst") x
+                         , _nameAnonym (p ++ ".snd") y
+                         )
+
+  unnameAnonym (x,y) = (unnameAnonym x, unnameAnonym y)

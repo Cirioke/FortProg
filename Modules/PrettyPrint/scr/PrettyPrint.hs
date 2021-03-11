@@ -26,4 +26,28 @@ instance Pretty Term where
     joined []     = ""
 
 
+instance Pretty Rule where
+  pretty (Rule conc assumps) = pretty conc ++ " :- " ++ show (map pretty assumps)
 
+
+instance Pretty Prog where
+  pretty (Prog rules) = unlines (map pretty rules)
+
+
+instance Pretty Goal where
+  pretty (Goal terms) = show (map pretty terms)
+
+
+
+-- TODO undo below
+instance Show Term where
+  show = pretty
+
+instance Show Rule where
+  show = pretty
+
+instance Show Prog where
+  show = pretty
+
+instance Show Goal where
+  show = pretty
