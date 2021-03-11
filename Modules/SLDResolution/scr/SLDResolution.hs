@@ -5,30 +5,32 @@ import Data.Maybe
 import Type
 
 import Variables
-import AnonymVars
 import Substitutions
 import Unification
 import Renaming
+import AnonymVars
 
 -- 1. --------------------------------------------------------------------------
 data SLDTree = SLDTree Goal [(Subst,SLDTree)]
+ deriving Show 
 
-
--- 2. --------------------------------------------------------------------------
--- \ Computes the SLDTree for a given goal and program.
+-- 2.
+-- / Constructs a sld tree for a given goal and programm.
+-- Works only proper for goal and programm in named mode,
+-- so all variables in the goal and programm should be named 
+-- (no underscore Variables).
 sld :: Prog -> Goal -> SLDTree
-sld _ g@(Goal []             ) = SLDTree g []
-sld p g@(Goal _) = SLDTree gNamed (childs pRenamedNamed)
+sld _    goal@(Goal []              ) = SLDTree goal []
+sld prog goal@(Goal (literal:terms) ) = SLDTree goal (childs progRenamed)
  where 
-  (gNamed@(Goal (namedLiteral:namedTerms) ), pNamed) = nameAnonym (g, p)
-  pRenamedNamed = renameNamed (allVars gNamed) pNamed
+  progRenamed = renameNamed (allVars goal) prog
 
   childs :: Prog -> [(Subst,SLDTree)]
   childs (Prog rules) = 
     do Rule c as <- rules
-       mcu       <- maybeToList(unify c namedLiteral)
-       newGoal   <- [Goal (apply mcu (as ++ namedTerms))]
-       return (mcu, sld p newGoal)
+       mcu       <- maybeToList(unify c literal)
+       newGoal   <- [Goal (apply mcu (as ++ terms))]
+       return (mcu, sld prog newGoal)
 
 
 -- 3. --------------------------------------------------------------------------
@@ -64,7 +66,7 @@ bfs (SLDTree _         edges ) = concatMap combine sortedEdges
 -- \ Returns the substitutions for the variables in goal,
 --   for wich the goal would be satisfied.
 solveWith :: Prog -> Goal -> Strategy -> [Subst]
-solveWith p g s = (map (filt . ((flip restrictTo) (allVars g))) (s (sld p g)))
+solveWith p g s = (map (filt . ((flip restrictTo) (allVars g))) (s sldTree))
  where
   -- \ Checks whether a substituted term is no anonym variable.
   noAnonym :: (VarName, Term) -> Bool
@@ -73,5 +75,6 @@ solveWith p g s = (map (filt . ((flip restrictTo) (allVars g))) (s (sld p g)))
   
   filt :: Subst -> Subst
   filt = (filtSubst noAnonym)
-
-
+  
+  sldTree :: SLDTree
+  sldTree = (uncurry sld) (renameAnonymOnly [] (p, g))

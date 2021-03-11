@@ -113,10 +113,20 @@ command 'd' session _    =
      putStrLn ("Debug mode is set to " ++ show (getDebug newSess))
      return newSess
 
+-------------------------- ADD RULE --------------------------------------------
+command '+' session progStr = 
+  case _prog of 
+    Right (Prog rules) ->do return (setProg session (Prog (currRules ++ rules)))
+    -- error handling
+    Left  errorStr     ->putError ("Parse error: " ++ errorStr) session
+  where _prog = parse progStr
+        Prog currRules = getProg session
+
 -------------------------- NOT DEFINED COMMAND ---------------------------------
 -- Error Handling
 command c   session _    = 
-  putError (':':(c:" is not a defined command.")) session
+  putError (':':(c:" is not a defined command.\n\
+                     \Type \":h\" for help.")) session
 
 
 -------------------------- EVALUATING QUERY ------------------------------------
@@ -154,19 +164,20 @@ helloString = "Welcome!\n\
 
 -- / String to be printed when user asks for help.
 helpString :: String
-helpString ="Commands available from the prompt:\n\
-            \  <goal>      Solves/proves the specified goal.\n\
-            \  :h          Shows this help message.\n\
-            \  :l <file>   Loads the specified file.\n\
-            \  :q          Exits the interactive environment.\n\
-            \  :r          Reloads the last loaded file.\n\
-            \  :s <strat>  Sets the specified search strategy\n\
-            \              where <strat> is one of 'dfs', 'bfs', or 'iddfs'\n\
-            \  :c          Shows the current path to the loaded program.\n\
-            \  :p          Shows the current loaded programm.\n\
-            \  :a          Shows the current session settings.\n\
-            \  :d          Toggles the debug mode on or off.\n\
-            \              In debug mode output will use show instead of pretty."
+helpString =    "Commands available from the prompt:\n\
+                \  <goal>      Solves/proves the specified goal.\n\
+                \  :h          Shows this help message.\n\
+                \  :l <file>   Loads the specified file.\n\
+                \  :q          Exits the interactive environment.\n\
+                \  :r          Reloads the last loaded file.\n\
+                \  :s <strat>  Sets the specified search strategy\n\
+                \              where <strat> is one of 'dfs', 'bfs', or 'iddfs'\n\
+                \  :c          Shows the current path to the loaded program.\n\
+                \  :p          Shows the current loaded programm.\n\
+                \  :a          Shows the current session settings.\n\
+                \  :d          Toggles the debug mode on or off.\n\
+                \              In debug mode output will use show instead of pretty.\n\
+                \  :+ <rule>   Adds the rule to the current programm."
 
 -- / Helper Funktion, to trim white spaces on the begin and end of a string.
 strip :: String -> String

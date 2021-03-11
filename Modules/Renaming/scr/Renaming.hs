@@ -4,6 +4,7 @@ module Renaming
   , renameUnnamed
   , renameToNamed
   , renameToUnnamed
+  , renameAnonymOnly
   ) 
  where
 
@@ -65,6 +66,7 @@ renameNamed :: (Vars a, AnonymVars a,  Substitutable a)
 renameNamed lst =   (_rename (not.isNamed) freshVars   lst) 
                   . (_rename      isNamed  freshAnonym lst)
 
+
 -- \ Renaiming all Variables within (second parameter).
 -- Variable names given in the first parameter won't be used in renaming.
 -- Underscore variables stay untouched.
@@ -89,3 +91,17 @@ renameToUnnamed :: (Vars a, AnonymVars a,  Substitutable a)
                 => [VarName] -> a -> a
 renameToUnnamed lst = (renameUnnamed lst) . unnameAnonym
 
+
+
+-- \ Renaiming only anonym variables within (second parameter).
+-- Variable names given in the first parameter won't be used in renaming.
+-- Underscores will be replaced by some unique anonym variable name.
+-- Anonym variables will replaced by fresh anonym variables.
+-- So this fuction can be called on objects in unnamed, named or mixed mode,
+-- and will securly end up in named mode.
+renameAnonymOnly :: (Vars a, AnonymVars a,  Substitutable a) 
+                  => [VarName] -> a -> a
+renameAnonymOnly lst x =   _rename isAnonym freshAnonym (oldVars ++ lst)
+                          $ nameAnonym
+                          $ unnameAnonym x
+  where oldVars = allVars x
