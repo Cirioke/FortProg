@@ -81,7 +81,6 @@ command 'l' session path =
          do s  <- return (setPath session path)
             s' <- return (setProg s       prog)
             putStrLn "Loaded."
-            putStrLn (show prog)
             return s'
         -- error Handling
        Left  errorStr -> 
