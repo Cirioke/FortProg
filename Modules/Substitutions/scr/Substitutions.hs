@@ -22,6 +22,7 @@ import Variables
 -- 1.
 -- \ Datatype representing substitutions.
 data Subst = Subst [(VarName, Term)]
+  deriving Show
 
 
 -- 2.
@@ -98,11 +99,6 @@ restrictTo (Subst lst) names = Subst (filter (\(x,_) -> isElem x (fromList names
 
 
 -- 7.
--- \ Helper function to join a list of string together.
-join :: String -> [String] -> String
-join _ [] = ""
-join s (h:l) = h ++ foldl (++) "" (map (\x -> s++x) l)
-
 instance Pretty Subst where
   pretty s = "{" ++ intern (filtSelfImage s) ++ "}"
    where
@@ -138,5 +134,3 @@ instance Arbitrary Subst where
                         rest <- replicateM (m-1) f
                         return (e : rest)
 
-instance Show Subst where
-  show = pretty
