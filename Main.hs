@@ -125,6 +125,10 @@ command '+' session progStr =
   where _prog = parse progStr
         Prog currRules = getProg session
 
+-------------------------- IGNORE COMMENT --------------------------------------
+command '%' session _ = do return session
+
+
 -------------------------- NOT DEFINED COMMAND ---------------------------------
 -- Error Handling
 command c   session _    = 
@@ -137,7 +141,10 @@ command c   session _    =
 evalQuery :: String -> Session -> IO Session
 evalQuery goalStr session =
   case _goal of
-    Right goal     -> nextSol (solveWith programm goal strategy)
+    Right goal     -> case solveWith programm goal strategy of
+                        []   -> do putStrLn "No solutions."
+                                   return session
+                        sols -> nextSol sols
     -- Error Handling
     Left  errorStr -> putError ("ParseError: " ++ errorStr) session
   where 
@@ -180,7 +187,8 @@ helpString =    "Commands available from the prompt:\n\
                 \  :a          Shows the current session settings.\n\
                 \  :d          Toggles the debug mode on or off.\n\
                 \              In debug mode output will use show instead of pretty.\n\
-                \  :+ <rules>  Adds the rules to the current programm."
+                \  :+ <rules>  Adds the rules to the current programm.\n\
+                \  :%<comment> This line will be ignored"
 
 -- / Helper Funktion, to trim white spaces on the begin and end of a string.
 strip :: String -> String
