@@ -13,25 +13,26 @@ import Renaming
 
 -- 1.
 data SLDTree = SLDTree Goal [(Subst,SLDTree)]
+ deriving (Show)                                 -- Debug
 
 -- 2.
 sld :: Prog -> Goal -> SLDTree
 sld _ g@(Goal []             ) = SLDTree g []
-sld p g@(Goal (literal:terms)) = SLDTree gNamed (childs pRenamedNamed)
+sld p g@(Goal _) = SLDTree gNamed (childs pRenamedNamed)
  where 
   --Modular Version:
-  gNamed = rename [] g
-  pRenamedNamed = rename (allVars g) p
+--   gNamed = rename [] g
+--   pRenamedNamed = rename (allVars g) p
 
-  -- -- Our Specific Version:
-  -- (gNamed, pNamed) = nameAnonym (g, p)
-  -- pRenamedNamed = renameNamed (allVars gNamed) pNamed
+  -- Our Specific Version:
+  (gNamed@(Goal (namedLiteral:namedTerms) ), pNamed) = nameAnonym (g, p)
+  pRenamedNamed = renameNamed (allVars gNamed) pNamed
 
   childs :: Prog -> [(Subst,SLDTree)]
   childs (Prog rules) = 
     do Rule c as <- rules
-       mcu       <- maybeToList(unify c literal)
-       newGoal   <- [Goal (apply mcu (as ++ terms))]
+       mcu       <- maybeToList(unify c namedLiteral)
+       newGoal   <- [Goal (apply mcu (as ++ namedTerms))]
        return (mcu, sld p newGoal)
 
 -- 3.
@@ -66,19 +67,29 @@ bfs (SLDTree _         edges ) = concatMap combine sortedEdges
 -- todo: dfs sollte nur listen von singles ausgeben
 
 solveWith :: Prog -> Goal -> Strategy -> [Subst]
-solveWith p g s = filt (s (sld p g))
- where
-  filt :: [Subst] -> [Subst]
-  filt ss = map f ss
-  f :: Subst -> Subst 
-  f su =  (restrictTo su (filter (not . isNamed) (domain su)))
+solveWith p g s = map ((flip restrictTo) (allVars g)  ) (s (sld p g)) 
+
+-- Debug vvv ------------------------------------------------------
+
+t = Comb "=" [Var (VarName "X"),Var (VarName "X")]  
+p = Prog [Rule t []]
+g = Goal [Comb "=" [Var (VarName "_"),Var (VarName "5")]]
+--SLDTree (Goal [Comb "=" [Var (VarName "A"),Var (VarName "B")]]) 
+--[(Subst [(VarName "A",Var (VarName "B")),(VarName "C",Var (VarName "B"))],SLDTree (Goal []) [])]
+
+-- unify (=(X,X),=(A,B))
+
+-- =(X,X)
+-- =(_,5)
+
+--  {X->B, A->B}
+
+-- =(B,B)
+-- =(B,B)
 
 
-
-
-
-
-
+-- SLDTree ["=(C, D)"] [({C -> A, A -> B},SLDTree [] [])]
+--                      ({C -> A, A -> B},SLDTree [] [])
 
 
 

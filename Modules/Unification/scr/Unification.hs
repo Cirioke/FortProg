@@ -40,7 +40,8 @@ unify t0 t1 = if t0 == t1
                     occurCheck vName t  -- Nothing results in Fail
                     newSub  <- Just (single vName t)
                     restSub <- unify (apply newSub t0) (apply newSub t1)
-                    return (compose newSub restSub)
+                    return (compose restSub newSub)  -- Debug test (switched <restSub, newSub>)
+                    
                   -- otherwise fail
                   _                   -> Nothing
  where
@@ -49,9 +50,6 @@ unify t0 t1 = if t0 == t1
   occurCheck v t = if isElem v (allVarsSet t)
                      then Nothing  -- Fail
                      else Just ()  -- no fail
-
-
-
 
 
 
