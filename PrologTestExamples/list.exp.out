@@ -1,0 +1,20 @@
+Welcome!
+Type ":h" for help.
+?- {Xs -> [2], Ys -> [1]}No more solutions.
+?- {X -> [], Y -> [1, 2]}{X -> [1], Y -> [2]}{X -> [1, 2], Y -> []}No more solutions.
+?- {}{}{}No more solutions.
+?- {X -> 3}No more solutions.
+?- Infinite solutions, lists with 3 as a last element.
+?- {Xs -> [3, 2, 1]}No more solutions.
+?- Infinite solutions, all palindroms
+?- {X -> 1}{X -> 2}{X -> 3}No more solutions.
+?- Infinite solutions, where X is within the lists.
+?- {X -> 1, Y -> [2, L]}{X -> 2, Y -> [1, L]}{X -> L, Y -> [1, 2]}No more solutions.
+?- {Xs -> [1, 2, 3]}No more solutions.
+?- Infinite solutions, where Y is the empty list.
+?- {Xs -> [_, _]}No more solutions.
+?- {Xs -> [4, 2]}No more solutions.
+?- {Xs -> [1, 2, 3, 4]}No more solutions.
+?- {Xs -> [1, 2, 3, 4, Z, 2]}" or some equivalent solution
+?- Ten solutions, namely all splitings of "[1, 2, 3]" into three lists "Bs", "Cs", and "Ds"
+?- 

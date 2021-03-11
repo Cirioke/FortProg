@@ -1,0 +1,7 @@
+:l ./PrologTestExamples/anon.pl
+p(A,B).
+;
+p(_,_).
+;
+q.
+;
