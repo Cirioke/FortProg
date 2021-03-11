@@ -13,6 +13,7 @@ import Renaming
 
 -- 1.
 data SLDTree = SLDTree Goal [(Subst,SLDTree)]
+ deriving (Show)                                 -- Debug
 
 -- 2.
 sld :: Prog -> Goal -> SLDTree
@@ -20,12 +21,12 @@ sld _ g@(Goal []             ) = SLDTree g []
 sld p g@(Goal (literal:terms)) = SLDTree gNamed (childs pRenamedNamed)
  where 
   --Modular Version:
-  gNamed = rename [] g
-  pRenamedNamed = rename (allVars g) p
+  -- gNamed = rename [] g
+  -- pRenamedNamed = rename (allVars g p
 
-  -- -- Our Specific Version:
-  -- (gNamed, pNamed) = nameAnonym (g, p)
-  -- pRenamedNamed = renameNamed (allVars gNamed) pNamed
+  -- Our Specific Version:
+  (gNamed, pNamed) = nameAnonym (g, p)
+  pRenamedNamed = renameNamed (allVars gNamed) pNamed
 
   childs :: Prog -> [(Subst,SLDTree)]
   childs (Prog rules) = 
@@ -66,19 +67,31 @@ bfs (SLDTree _         edges ) = concatMap combine sortedEdges
 -- todo: dfs sollte nur listen von singles ausgeben
 
 solveWith :: Prog -> Goal -> Strategy -> [Subst]
-solveWith p g s = filt (s (sld p g))
+solveWith p g s = s (sld p g)
  where
   filt :: [Subst] -> [Subst]
   filt ss = map f ss
   f :: Subst -> Subst 
   f su =  (restrictTo su (filter (not . isNamed) (domain su)))
 
+  
+-- Debug vvv ------------------------------------------------------
+
+t = Comb "=" [Var (VarName "X"),Var (VarName "X")]
+p = Prog [Rule t []]
+g = Goal [Comb "=" [Var (VarName "A"),Var (VarName "B")]]
+
+-- unify (=(X,X),=(A,B))
+-- {X -> A, A -> B}
+-- =(X,X)
+-- =(A,B)
+-- 
+-- =(B,B)
+-- =(B,B)
 
 
-
-
-
-
+-- SLDTree ["=(C, D)"] [({C -> A, A -> B},SLDTree [] [])]
+--                      ({C -> A, A -> B},SLDTree [] [])
 
 
 

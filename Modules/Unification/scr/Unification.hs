@@ -50,9 +50,21 @@ unify t0 t1 = if t0 == t1
                      then Nothing  -- Fail
                      else Just ()  -- no fail
 
+unify2 :: Term -> Term -> Maybe Subst
+unify2 t0 t1 = if t0 == t1
+                  then Just Substitutions.empty
+                  else case ds 
 
 
+t1 = Comb "=" [Var (VarName "X"),Var (VarName "X")]
+t2 = Comb "=" [Var (VarName "A"),Var (VarName "B")]
 
+-- unify (=(X,X)) (=(A,B))
+-- {X -> A, A -> B}
+-- =(X,X)
+-- =(A,B)
 
+-- =(A,A)
+-- =(B,B)
 
 
