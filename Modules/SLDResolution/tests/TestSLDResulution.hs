@@ -2,8 +2,8 @@
 
 import Test.QuickCheck
 
-import Variables
-import SLDResolution
+-- import Variables
+-- import SLDResolution
 
 
 -- freshCombs = [Comb cName lst | cName <-(map ('f':) freshVars)]

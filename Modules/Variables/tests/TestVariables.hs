@@ -2,7 +2,6 @@
 
 import Test.QuickCheck
 
-import PrettyPrint
 import Variables
 import Type
 
@@ -81,21 +80,6 @@ prop_unit_term i =    i < (length unitTests_Term)
     
 prop_List_2_Term :: Term -> Term -> Bool
 prop_List_2_Term t0 t1 = (allVars t0 ++ allVars t1) `is_set_eq` (allVars [t0,t1])
-
--- instance Vars a  => Vars [a] where
---   allVarsSet = mapUnion allVarsSet
-
--- instance (Vars a, Vars b) => Vars (a,b) where
---   allVarsSet (a,b) = union (allVarsSet a) (allVarsSet b)
-
--- instance Vars Rule where
---   allVarsSet (Rule conc pres) = allVarsSet (conc:pres)
-
--- instance Vars Prog where
---   allVarsSet (Prog rules) = allVarsSet rules
-
--- instance Vars Goal where
---   allVarsSet (Goal terms) = allVarsSet terms
 
 
 
