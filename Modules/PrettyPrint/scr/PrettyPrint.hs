@@ -1,12 +1,24 @@
-module PrettyPrint where
+module PrettyPrint 
+  ( Pretty
+  , pretty
+  , join
+  ) 
+  where
 
 import Type
+
 
 -- Type class to define the function "pretty".
 -- The method "pretty" returns the Prolog representation
 -- of an object in Haskell as a string.  
 class Pretty a where
   pretty :: a -> String
+
+
+-- \ Helper function to join a list of string together.
+join :: String -> [String] -> String
+join _ [] = ""
+join s (h:l) = h ++ foldl (++) "" (map (\x -> s++x) l)
 
 -- Define "pretty" for "Term".
 instance Pretty Term where
@@ -27,7 +39,9 @@ instance Pretty Term where
 
 
 instance Pretty Rule where
-  pretty (Rule conc assumps) = pretty conc ++ " :- " ++ show (map pretty assumps)
+  pretty (Rule conc assumps) =    pretty conc 
+                               ++ " :- " 
+                               ++ join ", " (map pretty assumps)
 
 
 instance Pretty Prog where
@@ -35,19 +49,8 @@ instance Pretty Prog where
 
 
 instance Pretty Goal where
-  pretty (Goal terms) = show (map pretty terms)
+  pretty (Goal terms) = join ", " (map pretty terms)
 
-
-
--- TODO undo below
-instance Show Term where
-  show = pretty
-
-instance Show Rule where
-  show = pretty
-
-instance Show Prog where
-  show = pretty
-
-instance Show Goal where
-  show = pretty
+instance Show a => Pretty (Maybe a) where
+  pretty Nothing  = "-"
+  pretty (Just s) = show s
