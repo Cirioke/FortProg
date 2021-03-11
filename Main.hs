@@ -117,7 +117,9 @@ command 'd' session _    =
 -------------------------- ADD RULE --------------------------------------------
 command '+' session progStr = 
   case _prog of 
-    Right (Prog rules) ->do return (setProg session (Prog (currRules ++ rules)))
+    Right (Prog rules) -> do 
+                          putStrLn ("Rules added.")
+                          return (setProg session (Prog (currRules ++ rules)))
     -- error handling
     Left  errorStr     ->putError ("Parse error: " ++ errorStr) session
   where _prog = parse progStr
@@ -178,7 +180,7 @@ helpString =    "Commands available from the prompt:\n\
                 \  :a          Shows the current session settings.\n\
                 \  :d          Toggles the debug mode on or off.\n\
                 \              In debug mode output will use show instead of pretty.\n\
-                \  :+ <rule>   Adds the rule to the current programm."
+                \  :+ <rules>  Adds the rules to the current programm."
 
 -- / Helper Funktion, to trim white spaces on the begin and end of a string.
 strip :: String -> String
