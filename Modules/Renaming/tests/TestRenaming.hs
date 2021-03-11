@@ -77,6 +77,25 @@ prop_var_num_at_most_grows_Rule xs r =
 
 
 
+-- ∀xs,r:allVars(rename(xs,r)) ∩ (allVars(r) ∪ xs) = {}
+-- Test for Terms
+prop_no_common_variables_after_renameing2_Term :: [VarName] -> Term -> Bool
+prop_no_common_variables_after_renameing2_Term xs r = 
+  allVars (rename xs r)
+  `intersection`
+  ((allVars r) ++ xs)
+  == []
+
+
+-- Test for Rules
+prop_no_common_variables_after_renameing2_Rule :: [VarName] -> Rule -> Bool
+prop_no_common_variables_after_renameing2_Rule xs r = 
+  allVars (rename xs r)
+  `intersection`
+  ((allVars r) ++ xs)
+  == []
+
+
 -- Check all properties in this module:
 return []
 testAll:: IO Bool

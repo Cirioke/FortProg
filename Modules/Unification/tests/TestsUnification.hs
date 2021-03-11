@@ -21,7 +21,7 @@ prop_has_dif_means_not_same t1 t2 = (not.isNothing) (ds t1 t2)
 -- ∀t1,t2:ds(t1,t2) = {} ⇒ unify(t1,t2) ≠ fail ∧ domain(unify(t1,t2)) = {}
 prop_no_dif_means_empty_unificator :: Term -> Term -> Property
 prop_no_dif_means_empty_unificator t1 t2 = 
-  isNothing (ds t1 t1)
+  isNothing (ds t1 t2)
   ==> ((not.isNothing) mcu)  && ((domain <$> mcu) == pure [])
  where mcu = unify t1 t1 
 

@@ -20,8 +20,7 @@ type CombName = String
 
 -- Data type for terms
 data Term = Var VarName | Comb CombName [Term]
-  deriving (Eq)
-  -- , Show)
+  deriving (Eq, Show)
 
 -- Generator for terms
 instance Arbitrary Term where
@@ -33,7 +32,7 @@ instance Arbitrary Term where
 
 -- Data type for program rules
 data Rule = Rule Term [Term]
-  -- deriving Show
+  deriving Show
 
 -- Generator for rules
 instance Arbitrary Rule where
@@ -42,14 +41,8 @@ instance Arbitrary Rule where
 
 -- Data type for programs
 data Prog = Prog [Rule]
-  -- deriving Show
+  deriving Show
 
 -- Data type for goals
 data Goal = Goal [Term]
-  -- deriving Show
-
-
-
-
-  
-  
+  deriving Show

@@ -19,11 +19,11 @@ sld :: Prog -> Goal -> SLDTree
 sld _ g@(Goal []             ) = SLDTree g []
 sld p g@(Goal (literal:terms)) = SLDTree gNamed (childs pRenamedNamed)
  where 
-  -- --Modular Version:
+  --Modular Version:
   gNamed = rename [] g
   pRenamedNamed = rename (allVars g) p
 
-  -- Our Specific Version:
+  -- -- Our Specific Version:
   -- (gNamed, pNamed) = nameAnonym (g, p)
   -- pRenamedNamed = renameNamed (allVars gNamed) pNamed
 

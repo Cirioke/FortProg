@@ -3,6 +3,7 @@ import System.IO
 import Type
 import Parser
 
+import PrettyPrint
 import Sessioner
 import Substitutions
 import SLDResolution
@@ -96,7 +97,11 @@ command 'r' session _    =
 command 'c' session _    = 
   do putStrLn (show (getPath session))
      return session
-                     
+
+-------------------------- CURRENT PROGRAMM ------------------------------------
+command 'c' session _    = 
+  do putStrLn (pretty (getProg session))
+     return session  
 
 -------------------------- NOT DEFINED COMMAND ---------------------------------
 -- Error Handling
