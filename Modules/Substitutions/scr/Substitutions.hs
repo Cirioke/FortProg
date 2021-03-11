@@ -73,8 +73,12 @@ instance Substitutable Prog where
 instance Substitutable Goal where
   apply s (Goal terms) = Goal (apply s terms)
 
+instance (Substitutable a, Substitutable b) => Substitutable (a, b) where
+  apply s (x,y) = (apply s x, apply s y)
+
 instance Substitutable a => Substitutable [a] where
   apply s lst = map (apply s) lst
+
 
 
 -- 5.
@@ -133,4 +137,3 @@ instance Arbitrary Subst where
     replicateM m f = do e    <- f 
                         rest <- replicateM (m-1) f
                         return (e : rest)
-

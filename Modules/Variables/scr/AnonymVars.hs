@@ -1,6 +1,7 @@
 module AnonymVars 
     ( AnonymVars
     , isNamed
+    , isUnnamed
     , isAnonym
     , nameAnonym
     , unnameAnonym
@@ -22,10 +23,16 @@ isNamed :: VarName -> Bool
 isNamed (VarName ('0':('%':('$':_))) ) = True
 isNamed (VarName _                   ) = False
 
+isUnnamed :: VarName -> Bool
+isUnnamed (VarName "_") = True
+isUnnamed _             = False
+
 -- \ returns wether a variable is a named or unnamed anonym Variable
 isAnonym :: VarName -> Bool
-isAnonym v =   v == (VarName "_") 
+isAnonym v =   isUnnamed v
             || isNamed v
+
+          
 
 -- \ A infinite list for new anonym variables.
 freshAnonym::[VarName]

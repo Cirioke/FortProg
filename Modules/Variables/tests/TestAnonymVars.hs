@@ -13,7 +13,7 @@ countV p (Comb _  terms) = sum (map (countV p) terms)
 
 -- / Helper funktion to detremine number of unnamed anonym variables
 countUnnamed :: Term -> Int
-countUnnamed = countV (\v -> (isAnonym v) && not (isNamed v))
+countUnnamed = countV isUnnamed
 
 -- / Helper funktion to detremine number of named anonym variables
 countNamed :: Term -> Int

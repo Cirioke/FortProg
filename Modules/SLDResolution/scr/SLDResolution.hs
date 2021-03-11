@@ -5,7 +5,6 @@ import Data.Maybe
 import Type
 
 import Variables
-import AnonymVars
 import Substitutions
 import Unification
 import Renaming
@@ -13,27 +12,25 @@ import Renaming
 
 -- 1.
 data SLDTree = SLDTree Goal [(Subst,SLDTree)]
- deriving (Show)                                 -- Debug
+ deriving Show
 
 -- 2.
+-- / Constructs a sld tree for a given goal and programm.
+-- Works only proper for goal and programm in named mode,
+-- so all variables in the goal and programm should be named 
+-- (no underscore Variables).
 sld :: Prog -> Goal -> SLDTree
-sld _ g@(Goal []             ) = SLDTree g []
-sld p g@(Goal _) = SLDTree gNamed (childs pRenamedNamed)
+sld _    goal@(Goal []              ) = SLDTree goal []
+sld prog goal@(Goal (literal:terms) ) = SLDTree goal (childs progRenamed)
  where 
-  --Modular Version:
---   gNamed = rename [] g
---   pRenamedNamed = rename (allVars g) p
-
-  -- Our Specific Version:
-  (gNamed@(Goal (namedLiteral:namedTerms) ), pNamed) = nameAnonym (g, p)
-  pRenamedNamed = renameNamed (allVars gNamed) pNamed
+  progRenamed = renameNamed (allVars goal) prog
 
   childs :: Prog -> [(Subst,SLDTree)]
   childs (Prog rules) = 
     do Rule c as <- rules
-       mcu       <- maybeToList(unify c namedLiteral)
-       newGoal   <- [Goal (apply mcu (as ++ namedTerms))]
-       return (mcu, sld p newGoal)
+       mcu       <- maybeToList(unify c literal)
+       newGoal   <- [Goal (apply mcu (as ++ terms))]
+       return (mcu, sld prog newGoal)
 
 -- 3.
 type Strategy = SLDTree -> [Subst]
@@ -63,34 +60,14 @@ bfs (SLDTree _         edges ) = concatMap combine sortedEdges
 
 
 -- 5.
-
--- todo: dfs sollte nur listen von singles ausgeben
-
+-- / Solves for the goal with the given programm,
+-- and returs the list of solutions as substitutions in the order
+-- the strategy traverses the sld tree.
+-- Goal and Programm should be in unnamed mode.
 solveWith :: Prog -> Goal -> Strategy -> [Subst]
-solveWith p g s = map ((flip restrictTo) (allVars g)  ) (s (sld p g)) 
-
--- Debug vvv ------------------------------------------------------
-
-t = Comb "=" [Var (VarName "X"),Var (VarName "X")]  
-p = Prog [Rule t []]
-g = Goal [Comb "=" [Var (VarName "_"),Var (VarName "5")]]
---SLDTree (Goal [Comb "=" [Var (VarName "A"),Var (VarName "B")]]) 
---[(Subst [(VarName "A",Var (VarName "B")),(VarName "C",Var (VarName "B"))],SLDTree (Goal []) [])]
-
--- unify (=(X,X),=(A,B))
-
--- =(X,X)
--- =(_,5)
-
---  {X->B, A->B}
-
--- =(B,B)
--- =(B,B)
-
-
--- SLDTree ["=(C, D)"] [({C -> A, A -> B},SLDTree [] [])]
---                      ({C -> A, A -> B},SLDTree [] [])
-
-
-
-
+solveWith prog goal trav = map restrict (trav sldTree)
+  where 
+    restrict :: Subst -> Subst
+    restrict = (flip restrictTo) (allVars goal)
+    sldTree :: SLDTree
+    sldTree = (uncurry sld) (renameAnonymOnly [] (prog, goal))
