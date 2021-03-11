@@ -6,6 +6,7 @@ module Substitutions
     , apply
     , compose
     , restrictTo
+    , filtSubst
     , Substitutable
     )
   where
@@ -90,12 +91,15 @@ compose (Subst a) (Subst b) = filtSelfImage (Subst ((filtA a b) ++ (appB a b)))
   appB la lb = zip (fst (unzip lb)) (map (apply (Subst la)) (snd (unzip lb)))
 
 
-  
 -- 6.
+-- \ Filters the elements of a substition with a given function.
+filtSubst :: ((VarName, Term) -> Bool) -> Subst -> Subst
+filtSubst f (Subst lst) = Subst (filter f lst)
+
 -- \ Resticting a substitution means reducing the domain
 --  to the given list of variable names.
 restrictTo :: Subst -> [VarName] -> Subst
-restrictTo (Subst lst) names = Subst (filter (\(x,_) -> isElem x (fromList names)) lst)
+restrictTo subst names = filtSubst (\(x,_) -> isElem x (fromList names)) subst
 
 
 -- 7.
