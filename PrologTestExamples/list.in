@@ -67,63 +67,173 @@ reverse(Xs,[1,2,3]).
 
 
 
-:% Test query: "reverse(Xs,Xs).".
 :% Expected result: Infinite solutions, all palindroms.
+reverse(Xs,Xs).
+;
+;
+;
+;
 
-:% Test query: "member(X,[1,2,3]).".
+
+
+
+
 :% Expected result: Three solutions, "{X -> 1}", "{X -> 2}", and "{X -> 3}".
+member(X,[1,2,3]).
+;
+;
+;
 
-:% Test query: "member(X,Xs).".
+
+
+
 :% Expected result: Infinite solutions, where X is within the lists.
+member(X,Xs).
+;
+;
+;
+;
 
-:% Test query: "delete(X,[1,2,L],Y).".
+
+
+
+
+
+
 :% Expected result: Three solutions, "{X -> 1, Y -> [2, L]}",
 :% "{X -> 2, Y -> [1, L]}", and "{X -> L, Y -> [1, 2]}".
 :% Tests renaming during SLD resolution.
+delete(X,[1,2,L],Y).
+;
+;
+;
 
-:% Test query: "sort([3,1,2],Xs).".
-:% Expected result: One solution, "{Xs -> [1, 2, 3]}".
 
-:% Test query: "append(X,Y,X).".
+
+
+:% :% ARITHMETIC NOT IMPLEMENTED
+:% :% Expected result: One solution, "{Xs -> [1, 2, 3]}".
+:% sort([3,1,2],Xs).
+:% ;
+
+
+
+
+
 :% Expected result: Infinite solutions, where Y is the empty list.
 :% Tests strategies and REPL for infinite number of solutions.
+append(X,Y,X).
+;
+;
+;
+;
 
-:% Test query: "length(Xs,2).".
+
+
+
+
+:% :% ARITHMETIC NOT IMPLEMENTED
 :% Expected result: One solution, "{Xs -> [_, _]}", but non-termination.
+:% length(Xs,2).
 
-:% Test query: "lengthP(Xs,s(s(o))).".
+
+
+
+
+
+
+
 :% Expected result: One solution, "{Xs -> [_, _]}".
+lengthP(Xs,s(s(o))).
+;
 
+
+
+:% :% HIGHER-ORDER NOT IMPLEMENTED
 :% Test query: "maplist(last,[[1,2,3,4],[_,2]],Xs).".
 :% Expected result: One solution, "{Xs -> [4, 2]}".
 :% Tests higher-order predicates.
 
-:% Test query: "concatlist([[1,2,3],[4]],Xs).".
+
+
+
+
+
 :% Expected result: One solution, "{Xs -> [1, 2, 3, 4]}".
 :% Tests structures.
+concatlist([[1,2,3],[4]],Xs).
+;
 
+
+
+
+:% :% HIGHER-ORDER NOT IMPLEMENTED
 :% Test query: "concatmaplist(=,[[1,2,3,4],[_,2]],Xs).".
 :% Expected result: One solution, "{Xs -> [1, 2, 3, 4, Z, 2]}" or some
 :% equivalent solution ("Z" has to be a fresh variable).
 :% Tests structures, higher-order predicates and renaming during SLD resolution.
 
-:% Test query: "findall(X,member(X,[1,true,[]]),Xs).".
+
+
+
+
+
+
+:% :% HIGHER-ORDER NOT IMPLEMENTED
 :% Expected result: One solution, "{Xs -> [1, true, []]}".
 :% Tests encapsulation.
+:% findall(X,member(X,[1,true,[]]),Xs).
+:% ;
 
-:% Test query: "findall(true,member(X,[_,_]),Xs).".
+
+
+
+
+
+:% :% HIGHER-ORDER NOT IMPLEMENTED
 :% Expected result: One solution, "{Xs -> [true, true]}".
 :% Tests encapsulation with focus on the template (the first argument) and
 :% handling of anonymous variables.
+:% findall(true,member(X,[_,_]),Xs).
+:% ;
 
-:% Test query: "findall([X],append(_,_,[_,_]),Xs).".
+
+
+
+
+
+
+
+:% :% HIGHER-ORDER NOT IMPLEMENTED
 :% Expected result: One solution, "{Xs -> [[C], [B], [A]]}" or some
 :% equivalent solution ("C", "B", and "A" have to be a fresh variables).
 :% Tests encapsulation, handling of anonymous variables and generation of fresh
 :% variables - especially in the context of encapsutilation (this is advanced).
+:% findall([X],append(_,_,[_,_]),Xs).
+:% ;
 
-:% Test query: "append(_As,Bs,[1,2,3]),append(Cs,Ds,_As).".
-% Expected result: Ten solutions, namely all splittings of "[1, 2, 3]" into
+
+
+
+
+
+
+
+:% Expected result: Ten solutions, namely all splittings of "[1, 2, 3]" into
 :% three lists "Bs", "Cs", and "Ds" ("_As" is just a helper variable, but has
 :% to be part of every solution nonetheless).
 :% Tests multiple literals in a query and solution printing.
+append(_As,Bs,[1,2,3]),append(Cs,Ds,_As).
+;
+;
+;
+;
+;
+;
+;
+;
+;
+;
+
+
+
