@@ -100,7 +100,7 @@ command 'c' session _    =
      return session
 
 -------------------------- CURRENT PROGRAMM ------------------------------------
-command 'c' session _    = 
+command 'p' session _    = 
   do putStrLn (pretty (getProg session))
      return session  
 
