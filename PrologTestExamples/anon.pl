@@ -24,8 +24,6 @@ b(b).
 % will not be any solutions.
 
 
-% ["anon",("p(A,B).","{A -> a, B -> b}"),("p(_,_).","{}"),("q.","{}")]
-
 
 
 

@@ -20,13 +20,13 @@ import PrettyPrint
 import Variables
 
 
--- 1.
+-- 1. --------------------------------------------------------------------------
 -- \ Datatype representing substitutions.
 data Subst = Subst [(VarName, Term)]
   deriving Show
 
 
--- 2.
+-- 2. --------------------------------------------------------------------------
 -- \ Helperfunction returning wether the tuple 
 -- represents a identity substitution.
 noSelfImage :: (VarName, Term) -> Bool
@@ -42,7 +42,7 @@ domain :: Subst -> [VarName]
 domain subst = (\(Subst lst) -> fst (unzip lst)) (filtSelfImage subst)
 
 
--- 3.
+-- 3. --------------------------------------------------------------------------
 -- \ Constructor for an the identity substiution.
 empty :: Subst
 empty = Subst []
@@ -52,7 +52,7 @@ single :: VarName -> Term -> Subst
 single a b = filtSelfImage (Subst [(a, b)])
 
 
--- 4.
+-- 4. --------------------------------------------------------------------------
 -- \ A class for objects to whitch a substitution can be applyed
 class Vars a => Substitutable a where
   -- \ Apply a substitution to an object (containing variables).
@@ -82,7 +82,7 @@ instance Substitutable a => Substitutable [a] where
 
 
 
--- 5.
+-- 5. --------------------------------------------------------------------------
 -- \ Composing tow substitutions together in the manner of function composing,
 --  so the result is a substition that has the same effect as if the two 
 --  components would be applyed one after another.
@@ -95,7 +95,7 @@ compose (Subst a) (Subst b) = filtSelfImage (Subst ((filtA a b) ++ (appB a b)))
   appB la lb = zip (fst (unzip lb)) (map (apply (Subst la)) (snd (unzip lb)))
 
 
--- 6.
+-- 6. --------------------------------------------------------------------------
 -- \ Filters the elements of a substition with a given function.
 filtSubst :: ((VarName, Term) -> Bool) -> Subst -> Subst
 filtSubst f (Subst lst) = Subst (filter f lst)
@@ -106,7 +106,7 @@ restrictTo :: Subst -> [VarName] -> Subst
 restrictTo subst names = filtSubst (\(x,_) -> isElem x (fromList names)) subst
 
 
--- 7.
+-- 7. --------------------------------------------------------------------------
 instance Pretty Subst where
   pretty s = "{" ++ intern (filtSelfImage s) ++ "}"
    where
@@ -116,12 +116,12 @@ instance Pretty Subst where
     str (VarName n,t) = n ++ " -> " ++ (pretty t)
 
 
--- 8.
+-- 8. --------------------------------------------------------------------------
 instance Vars Subst where
   allVarsSet (Subst substRules) = allVarsSet substRules
 
 
--- 9.
+-- 9. --------------------------------------------------------------------------
 instance Arbitrary Subst where
   arbitrary = do
     arity <- elements [1 .. 10]

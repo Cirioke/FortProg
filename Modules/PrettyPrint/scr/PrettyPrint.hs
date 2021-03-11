@@ -8,6 +8,7 @@ module PrettyPrint
 import Type
 
 
+-- 1. --------------------------------------------------------------------------
 -- Type class to define the function "pretty".
 -- The method "pretty" returns the Prolog representation
 -- of an object in Haskell as a string.  
@@ -15,6 +16,7 @@ class Pretty a where
   pretty :: a -> String
 
 
+-- 2. --------------------------------------------------------------------------
 -- \ Helper function to join a list of string together.
 join :: String -> [String] -> String
 join _ [] = ""

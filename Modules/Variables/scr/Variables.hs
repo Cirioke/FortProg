@@ -8,6 +8,7 @@ module Variables
 import Type
 import SetsAsOrderedList
 
+-- 1. --------------------------------------------------------------------------
 -- / Vars is a class for datatypes containing variables.
 class Vars a where
   -- / Get a list of all variables contained (without dublicates).
@@ -40,7 +41,7 @@ instance Vars Goal where
   allVarsSet (Goal terms) = allVarsSet terms
 
 
-
+-- 2. --------------------------------------------------------------------------
 -- \ Gives a infinite list of valid Prolog variable names, stored in a VarName.
 -- The list has the following format:
 -- [ VarName "A"
