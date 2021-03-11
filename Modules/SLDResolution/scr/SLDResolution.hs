@@ -71,11 +71,7 @@ solveWith p g s = filt (s (sld p g))
   filt :: [Subst] -> [Subst]
   filt ss = map f ss
   f :: Subst -> Subst 
-  f su =  (restrictTo su (filter (isNamed) (domain su)))
-
-
-
-
+  f su =  (restrictTo su (filter (not . isNamed) (domain su)))
 
 
 
