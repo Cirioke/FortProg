@@ -26,6 +26,7 @@ repl session | (not.isAlive) session = putStrLn "Bye bye."
      -- read
      inp <- getLine 
      case strip inp of 
+        ""            -> repl session
         -- inp is a command
         (':':(c:arg)) -> do --evaluate and print
                             newSess <- command c session (strip arg) 
